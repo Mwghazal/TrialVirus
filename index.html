@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>Go Live</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b0b0d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Go Live">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<style>
+  :root{
+    --ink:#0b0b0d;
+    --panel:#141419;
+    --line:#26262e;
+    --muted:#8b8b96;
+    --white:#fff;
+    --live:#ff2d55;
+    --ig1:#feda75; --ig2:#fa7e1e; --ig3:#d62976; --ig4:#962fbf; --ig5:#4f5bd5;
+    --tt:#00f2ea; --tt2:#ff0050;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--ink);color:var(--white);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    overflow:hidden;
+  }
+  button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+  input,textarea,select{font:inherit;color:inherit}
+
+  /* ---------- SETUP ---------- */
+  #setup{position:fixed;inset:0;overflow-y:auto;padding:22px 18px 120px;background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(150,47,191,.28), transparent 60%),
+    radial-gradient(900px 400px at 100% 0%, rgba(250,126,30,.18), transparent 55%),
+    var(--ink);}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 rgba(255,45,85,.7);animation:pulse 2s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 10px rgba(255,45,85,0)}100%{box-shadow:0 0 0 0 rgba(255,45,85,0)}}
+  h1{font-size:26px;letter-spacing:-.5px;margin:0;font-weight:700}
+  .sub{color:var(--muted);font-size:13.5px;margin:6px 0 22px;line-height:1.5}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+  .card h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:600}
+  .row{display:flex;gap:12px;align-items:center}
+  .row + .row{margin-top:14px}
+  label.f{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+  .field{flex:1;min-width:0}
+  input[type=text],input[type=number],textarea,select{
+    width:100%;background:#0e0e12;border:1px solid var(--line);border-radius:10px;
+    padding:11px 12px;font-size:15px;outline:none;
+  }
+  input:focus,textarea:focus,select:focus{border-color:#4f5bd5;box-shadow:0 0 0 3px rgba(79,91,213,.25)}
+  textarea{resize:vertical;min-height:120px;line-height:1.6;font-size:14px}
+  select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#8b8b96 50%),linear-gradient(135deg,#8b8b96 50%,transparent 50%);
+    background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+
+  .avatar-pick{display:flex;align-items:center;gap:14px}
+  .av{width:60px;height:60px;border-radius:50%;object-fit:cover;background:#222;border:2px solid #2f2f3a;flex:none;
+      display:grid;place-items:center;font-weight:700;font-size:20px;color:#6f6f7d}
+  .ghost{border:1px solid var(--line);border-radius:10px;padding:9px 14px;font-size:13.5px;background:#0e0e12}
+  .ghost:active{background:#17171d}
+
+  .seg{display:flex;background:#0e0e12;border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+  .seg button{flex:1;padding:9px 0;border-radius:9px;font-size:13.5px;color:var(--muted);font-weight:600}
+  .seg button[aria-pressed=true]{background:#23232c;color:#fff}
+
+  .slider{width:100%;-webkit-appearance:none;height:3px;border-radius:3px;background:#2b2b35;outline:none}
+  .slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+  .slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:0}
+  .val{font-variant-numeric:tabular-nums;font-size:13px;color:#fff;min-width:52px;text-align:right}
+
+  .switch{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .switch span{font-size:14.5px}
+  .toggle{width:48px;height:29px;border-radius:15px;background:#2b2b35;position:relative;transition:background .2s;flex:none}
+  .toggle::after{content:"";position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;background:#fff;transition:transform .2s}
+  .toggle[aria-pressed=true]{background:#4f5bd5}
+  .toggle[aria-pressed=true]::after{transform:translateX(19px)}
+
+  .hint{font-size:12px;color:#6b6b76;margin-top:8px;line-height:1.5}
+
+  #golive{position:fixed;left:18px;right:18px;bottom:26px;padding:16px;border-radius:16px;font-size:16px;font-weight:700;
+    background:linear-gradient(90deg,var(--ig2),var(--ig3),var(--ig4));box-shadow:0 10px 30px rgba(214,41,118,.35)}
+  #golive:active{transform:translateY(1px)}
+
+  /* ---------- LIVE ---------- */
+  #live{position:fixed;inset:0;display:none;overflow:hidden;background:#000}
+  #live.on{display:block}
+  #cam{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  #cam.mirror{transform:scaleX(-1)}
+  #fallback{position:absolute;inset:0;background:
+    radial-gradient(700px 500px at 30% 20%, #3a2b52, transparent 60%),
+    radial-gradient(600px 500px at 80% 80%, #1e3a4c, transparent 60%),#0a0a0e;}
+  .scrim-top{position:absolute;top:0;left:0;right:0;height:200px;background:linear-gradient(180deg,rgba(0,0,0,.65),transparent);pointer-events:none}
+  .scrim-bot{position:absolute;bottom:0;left:0;right:0;height:320px;background:linear-gradient(0deg,rgba(0,0,0,.72),transparent);pointer-events:none}
+
+  .topbar{position:absolute;top:0;left:0;right:0;padding:calc(14px + env(safe-area-inset-top)) 12px 0;display:flex;align-items:center;gap:8px}
+  .who{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.35);border-radius:22px;padding:5px 12px 5px 5px;backdrop-filter:blur(6px)}
+  .who img,.who .ph{width:32px;height:32px;border-radius:50%;object-fit:cover;background:#333;display:grid;place-items:center;font-size:13px;font-weight:700}
+  .who b{font-size:14px;font-weight:600;max-width:38vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .verified{width:13px;height:13px;flex:none}
+  .pill{font-size:12.5px;font-weight:700;letter-spacing:.04em;padding:6px 9px;border-radius:7px}
+  .pill.live{background:linear-gradient(90deg,#f9296b,#ff5a3c);text-transform:uppercase}
+  .pill.eyes{background:rgba(0,0,0,.42);display:flex;align-items:center;gap:5px;font-weight:600;font-variant-numeric:tabular-nums;backdrop-filter:blur(6px)}
+  .spacer{flex:1}
+  .xbtn{width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.42);display:grid;place-items:center;backdrop-filter:blur(6px)}
+
+  /* tiktok skin tweaks */
+  #live.tt .pill.live{background:var(--tt2);border-radius:4px}
+  #live.tt .pill.eyes{border-radius:4px}
+  #live.tt .who{border-radius:6px}
+
+  #chat{position:absolute;left:12px;bottom:calc(78px + env(safe-area-inset-bottom));width:74%;max-height:44vh;
+    display:flex;flex-direction:column;justify-content:flex-end;gap:9px;overflow:hidden;
+    -webkit-mask-image:linear-gradient(180deg,transparent,#000 22%);mask-image:linear-gradient(180deg,transparent,#000 22%)}
+  .msg{display:flex;gap:8px;align-items:flex-start;animation:rise .45s cubic-bezier(.2,.9,.3,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .msg .ic{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff}
+  .msg .tx{font-size:14px;line-height:1.34;text-shadow:0 1px 3px rgba(0,0,0,.55)}
+  .msg .tx b{font-weight:600;color:rgba(255,255,255,.72);margin-right:6px;font-size:13.5px}
+  .msg.sys .tx{color:rgba(255,255,255,.8);font-size:13px}
+  .gift{background:linear-gradient(90deg,rgba(255,0,80,.85),rgba(255,0,80,.25));border-radius:8px;padding:6px 10px;font-size:13px;
+        animation:rise .45s cubic-bezier(.2,.9,.3,1)}
+
+  .bottombar{position:absolute;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px}
+  .fakeinput{flex:1;height:42px;border-radius:21px;border:1px solid rgba(255,255,255,.35);display:flex;align-items:center;
+    padding:0 16px;font-size:14px;color:rgba(255,255,255,.75);background:rgba(0,0,0,.18);backdrop-filter:blur(4px)}
+  .circbtn{width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.32);display:grid;place-items:center;backdrop-filter:blur(4px);flex:none}
+
+  #hearts{position:absolute;right:6px;bottom:70px;width:90px;height:70vh;pointer-events:none;overflow:hidden}
+  .h{position:absolute;bottom:0;left:34px;animation:up var(--dur,4.2s) linear forwards}
+  .h svg{display:block;animation:sway 1.4s ease-in-out infinite alternate}
+  @keyframes up{to{transform:translateY(-70vh) scale(.55);opacity:0}}
+  @keyframes sway{from{transform:translateX(-16px) rotate(-8deg)}to{transform:translateX(16px) rotate(8deg)}}
+
+  #camerr{position:absolute;left:20px;right:20px;top:50%;transform:translateY(-50%);
+    background:rgba(18,18,22,.92);border:1px solid #2c2c36;border-radius:16px;padding:20px;display:none;backdrop-filter:blur(10px)}
+  #camerr.on{display:block}
+  #camerr h3{margin:0 0 8px;font-size:16px}
+  #camerr p{margin:0 0 16px;font-size:13.5px;line-height:1.55;color:#b9b9c4}
+  #camerr .row{gap:8px}
+  #camerr button{flex:1;padding:11px 0;border-radius:10px;font-size:14px;font-weight:600;text-align:center}
+  #retryCam{background:#4f5bd5}
+  #skipCam{background:#23232c}
+
+  #tapfx{position:absolute;inset:0}
+  .burst{position:absolute;pointer-events:none;animation:pop .7s ease-out forwards}
+  @keyframes pop{0%{transform:scale(.3);opacity:1}100%{transform:scale(1.5) translateY(-40px);opacity:0}}
+
+  /* ---------- ENDED ---------- */
+  /* ---------- pack chips ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .chip{border:1px solid var(--line);background:#0e0e12;border-radius:999px;padding:8px 13px;font-size:13px;color:#c9c9d3}
+  .chip:active{background:#1b1b22}
+  .chip[aria-pressed=true]{background:#23232c;color:#fff;border-color:#3a3a46}
+  .packbtns{display:flex;gap:8px;margin-bottom:12px}
+  .packbtns .ghost{flex:1;text-align:center}
+  .thumbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .thumbs img{width:52px;height:66px;object-fit:cover;border-radius:6px}
+  .thumbs .empty{width:52px;height:66px;border-radius:6px;border:1px dashed #33333f}
+
+  /* ---------- INSTAGRAM PROFILE ---------- */
+  #profile{position:fixed;inset:0;display:none;background:#fff;color:#000;overflow-y:auto;overscroll-behavior:contain}
+  #profile.on{display:block}
+  #profile img{display:block}
+  .ig{padding-bottom:78px;font-size:15px}
+  .ig-shot{width:100%;height:auto}
+  .ig-top{display:flex;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 14px 8px}
+  .ig-top .mid{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-width:0}
+  .ig-top .mid b{font-size:21px;font-weight:700;letter-spacing:-.3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ig-ico{width:26px;height:26px;flex:none}
+  .ig-stats{display:flex;align-items:center;gap:8px;padding:10px 16px 4px}
+  .ig-av{width:86px;height:86px;border-radius:50%;object-fit:cover;background:#efefef;flex:none;
+         display:grid;place-items:center;font-size:30px;font-weight:700;color:#b9b9c0;border:1px solid #eee}
+  .ig-nums{flex:1;display:flex;justify-content:space-around;text-align:center}
+  .ig-nums b{display:block;font-size:19px;font-weight:700;letter-spacing:-.4px}
+  .ig-nums span{font-size:13.5px;color:#222}
+  .ig-bio{padding:12px 16px 0;line-height:1.42;font-size:14.5px}
+  .ig-bio .nm{font-weight:700;font-size:15px}
+  .ig-bio a{color:#00376b;text-decoration:none;word-break:break-all}
+  .ig-dash{margin:14px 16px 0;background:#f2f3f5;border-radius:12px;padding:13px 15px}
+  .ig-dash b{display:block;font-size:15px;font-weight:600}
+  .ig-dash span{font-size:13px;color:#666}
+  .ig-actions{display:flex;gap:8px;padding:12px 16px 0}
+  .ig-actions div{flex:1;background:#efefef;border-radius:9px;padding:9px 0;text-align:center;font-size:14px;font-weight:600}
+  .ig-high{display:flex;gap:16px;padding:18px 16px 4px;overflow-x:auto;scrollbar-width:none}
+  .ig-high::-webkit-scrollbar{display:none}
+  .ig-high figure{margin:0;width:66px;flex:none;text-align:center}
+  .ig-high .ring{width:66px;height:66px;border-radius:50%;border:1px solid #dbdbdb;overflow:hidden;display:grid;place-items:center;background:#fafafa}
+  .ig-high .ring img{width:100%;height:100%;object-fit:cover}
+  .ig-high figcaption{font-size:12px;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ig-tabs{display:flex;margin-top:16px;border-top:1px solid #dbdbdb}
+  .ig-tabs div{flex:1;padding:11px 0;display:grid;place-items:center;border-bottom:1.5px solid transparent}
+  .ig-tabs div.sel{border-bottom-color:#000}
+  .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px}
+  .ig-grid .cell{aspect-ratio:3/4;background:#e9e9ee;position:relative;overflow:hidden}
+  .ig-grid .cell img{width:100%;height:100%;object-fit:cover}
+  .ig-nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #efefef;
+          display:flex;justify-content:space-around;align-items:center;padding:11px 8px calc(11px + env(safe-area-inset-bottom))}
+  .ig-nav img.me{width:26px;height:26px;border-radius:50%;object-fit:cover}
+  #escape{position:fixed;top:0;right:0;width:64px;height:64px;z-index:9}
+
+  @media (prefers-reduced-motion: reduce){
+    .h,.h svg,.msg,.gift,.burst{animation-duration:.01ms!important;animation-iteration-count:1!important}
+    .h{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SETUP ============ -->
+<div id="setup">
+  <div class="brand"><span class="dot"></span><h1>Go Live</h1></div>
+  <p class="sub">Set the stage, then start. Everything on screen is simulated — no stream leaves this phone.</p>
+  <button class="ghost" id="installBtn" hidden style="margin-bottom:18px">📲 Install as an app</button>
+
+  <div class="card">
+    <h2>Profile</h2>
+    <div class="avatar-pick">
+      <div class="av" id="avPreview">M</div>
+      <div>
+        <button class="ghost" id="pickAvatar">Choose photo</button>
+        <input type="file" id="avatarFile" accept="image/*" hidden>
+        <div class="hint">Screenshot your profile picture and pick it here.</div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <div class="field">
+        <label class="f" for="uname">Username</label>
+        <input type="text" id="uname" value="maherghazal" autocapitalize="none" autocorrect="off">
+      </div>
+    </div>
+    <div class="row">
+      <div class="switch" style="flex:1">
+        <span>Verified badge</span>
+        <button class="toggle" id="verified" aria-pressed="true" aria-label="Verified badge"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Look</h2>
+    <div class="seg" id="skin">
+      <button data-skin="ig" aria-pressed="true">Instagram</button>
+      <button data-skin="tt" aria-pressed="false">TikTok</button>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <div class="field">
+        <label class="f" for="camera">Camera</label>
+        <select id="camera">
+          <option value="user">Front camera</option>
+          <option value="environment">Back camera</option>
+          <option value="none">No camera (dark backdrop)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Audience</h2>
+    <div class="row">
+      <div class="field">
+        <label class="f" for="viewers">Starting viewers</label>
+        <input type="number" id="viewers" value="4200" min="1" max="9999999" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label class="f" for="trend">Trend</label>
+        <select id="trend">
+          <option value="climb">Climbing</option>
+          <option value="wobble">Holding steady</option>
+          <option value="fixed">Locked</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label class="f" for="chatrate">Comment speed</label>
+        <div class="row"><input type="range" class="slider" id="chatrate" min="1" max="10" value="6"><span class="val" id="chatrateV">Busy</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label class="f" for="heartrate">Likes</label>
+        <div class="row"><input type="range" class="slider" id="heartrate" min="0" max="10" value="6"><span class="val" id="heartrateV">Steady</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="switch" style="flex:1">
+        <span>Show joins &amp; gifts</span>
+        <button class="toggle" id="joins" aria-pressed="true" aria-label="Show joins and gifts"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Comments</h2>
+    <div class="chips" id="packs"></div>
+    <div class="packbtns">
+      <button class="ghost" id="loadPack">Replace with pack</button>
+      <button class="ghost" id="addPack">Add to list</button>
+    </div>
+    <label class="f" for="comments">One per line — they play in random order</label>
+    <textarea id="comments" spellcheck="false"></textarea>
+    <div class="hint">Write <b>{name}</b> anywhere and it becomes the handle of whoever commented just before — that's how the replies read like a real thread.</div>
+    <label class="f" for="names" style="margin-top:16px">Commenter accounts, one per line</label>
+    <textarea id="names" spellcheck="false" style="min-height:90px"></textarea>
+    <div class="hint" id="nameCount"></div>
+  </div>
+
+  <div class="card">
+    <h2>After the live</h2>
+    <div class="seg" id="endMode">
+      <button data-end="profile" aria-pressed="true">Built-in profile</button>
+      <button data-end="shot" aria-pressed="false">My screenshot</button>
+    </div>
+
+    <div id="shotBox" hidden>
+      <div class="row" style="margin-top:14px">
+        <button class="ghost" id="pickShot">Choose screenshot</button>
+        <input type="file" id="shotFile" accept="image/*" hidden>
+      </div>
+      <div class="thumbs" id="shotThumb"></div>
+      <div class="hint">Take a screenshot of your own profile and pick it here. It fills the screen when the live ends.</div>
+    </div>
+
+    <div id="profBox">
+      <div class="row" style="margin-top:14px">
+        <div class="field"><label class="f" for="dispname">Display name</label><input type="text" id="dispname" value="Maher Ghazal"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label class="f" for="posts">Posts</label><input type="text" id="posts" value="1,335"></div>
+        <div class="field"><label class="f" for="followers">Followers</label><input type="text" id="followers" value="19.4K"></div>
+        <div class="field"><label class="f" for="following">Following</label><input type="text" id="following" value="656"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label class="f" for="bio">Bio</label><input type="text" id="bio" value="Food, Sarcasm, and Random Stuff"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label class="f" for="website">Link</label><input type="text" id="website" value="www.maherghazal.com" autocapitalize="none"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label class="f" for="dash">Dashboard line</label><input type="text" id="dash" value="30.5K views in the last 30 days."></div>
+      </div>
+      <div class="row">
+        <div class="field"><label class="f" for="highlights">Highlight names, comma separated</label><input type="text" id="highlights" value="Italy 2025, Lebanon 2025, Austria Ski Trip, Habibi"></div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label class="f">Grid photos</label>
+          <button class="ghost" id="pickGrid">Add photos</button>
+          <input type="file" id="gridFile" accept="image/*" multiple hidden>
+          <div class="thumbs" id="gridThumbs"></div>
+          <div class="hint">Tap a photo to remove it. Empty slots stay grey.</div>
+        </div>
+      </div>
+    </div>
+    <div class="hint" style="margin-top:14px">To get back here from the profile, press and hold the top-right corner for a second.</div>
+  </div>
+
+  <button id="golive">Start live</button>
+</div>
+
+<!-- ============ LIVE ============ -->
+<div id="live">
+  <div id="fallback"></div>
+  <video id="cam" autoplay muted playsinline></video>
+  <div class="scrim-top"></div>
+  <div class="scrim-bot"></div>
+  <div id="tapfx"></div>
+
+  <div id="camerr">
+    <h3 id="camerrTitle">Camera didn't start</h3>
+    <p id="camerrBody"></p>
+    <div class="row">
+      <button id="retryCam">Try again</button>
+      <button id="skipCam">Carry on without it</button>
+    </div>
+  </div>
+
+  <div class="topbar">
+    <div class="who">
+      <span id="liveAv" class="ph">M</span>
+      <b id="liveName">maherghazal</b>
+      <svg class="verified" id="liveVerified" viewBox="0 0 24 24" fill="#3897f0"><path d="M12 1.5l2.6 2.1 3.3-.4 1.1 3.2 2.9 1.7-1 3.2 1 3.2-2.9 1.7-1.1 3.2-3.3-.4L12 22.5l-2.6-2.1-3.3.4-1.1-3.2-2.9-1.7 1-3.2-1-3.2 2.9-1.7 1.1-3.2 3.3.4z"/><path d="M10.8 15.3l-3-3 1.3-1.3 1.7 1.7 4-4 1.3 1.3z" fill="#fff"/></svg>
+    </div>
+    <span class="pill live">Live</span>
+    <span class="pill eyes"><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M12 5c-5 0-9 4.5-10 7 1 2.5 5 7 10 7s9-4.5 10-7c-1-2.5-5-7-10-7zm0 11a4 4 0 110-8 4 4 0 010 8z"/></svg><span id="vcount">0</span></span>
+    <span class="spacer"></span>
+    <button class="xbtn" id="endBtn" aria-label="End live"><svg width="15" height="15" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  </div>
+
+  <div id="chat"></div>
+  <div id="hearts"></div>
+
+  <div class="bottombar">
+    <div class="fakeinput">Add a comment…</div>
+    <button class="circbtn" id="flipBtn" aria-label="Flip camera">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 012-2h3l1.5-2h3L14 4h4a2 2 0 012 2v10a2 2 0 01-2 2h-4"/><path d="M9 21l-3-3 3-3"/><path d="M6 18h6"/><circle cx="14" cy="11" r="3"/></svg>
+    </button>
+    <button class="circbtn" id="heartBtn" aria-label="Send a like">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="#fff"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0112 7a4.6 4.6 0 018 3.6C20 16.1 12 21 12 21z"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ============ PROFILE ============ -->
+<div id="profile">
+  <img id="shotImg" class="ig-shot" alt="" hidden>
+  <div class="ig" id="igBuilt">
+    <div class="ig-top">
+      <svg class="ig-ico" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <div class="mid">
+        <b id="pHandle">maherghazal</b>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="#3897f0" id="pVerified"><path d="M12 1.5l2.6 2.1 3.3-.4 1.1 3.2 2.9 1.7-1 3.2 1 3.2-2.9 1.7-1.1 3.2-3.3-.4L12 22.5l-2.6-2.1-3.3.4-1.1-3.2-2.9-1.7 1-3.2-1-3.2 2.9-1.7 1.1-3.2 3.3.4z"/><path d="M10.8 15.3l-3-3 1.3-1.3 1.7 1.7 4-4 1.3 1.3z" fill="#fff"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.4" stroke-linecap="round"><path d="M5 9l7 7 7-7"/></svg>
+      </div>
+      <svg class="ig-ico" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.6"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm-2 12s3.5.6 4.5-1.6c1-2.2-2.6-3-4-1.4-1.4 1.6.2 4.6 2.5 3.6"/></svg>
+      <svg class="ig-ico" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </div>
+
+    <div class="ig-stats">
+      <div class="ig-av" id="pAv">M</div>
+      <div class="ig-nums">
+        <div><b id="pPosts">1,335</b><span>posts</span></div>
+        <div><b id="pFollowers">19.4K</b><span>followers</span></div>
+        <div><b id="pFollowing">656</b><span>following</span></div>
+      </div>
+    </div>
+
+    <div class="ig-bio">
+      <div class="nm" id="pName">Maher Ghazal</div>
+      <div id="pBio">Food, Sarcasm, and Random Stuff</div>
+      <a id="pLink" href="#">www.maherghazal.com</a>
+    </div>
+
+    <div class="ig-dash"><b>Professional dashboard</b><span id="pDash">30.5K views in the last 30 days.</span></div>
+
+    <div class="ig-actions"><div>Edit profile</div><div>Share profile</div></div>
+
+    <div class="ig-high" id="pHigh"></div>
+
+    <div class="ig-tabs">
+      <div class="sel"><svg width="23" height="23" viewBox="0 0 24 24" fill="#000"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="16" y="2" width="6" height="6" rx="1"/><rect x="2" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/><rect x="16" y="9" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/></svg></div>
+      <div><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#8e8e8e" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M10 9l6 3-6 3z" fill="#8e8e8e"/></svg></div>
+      <div><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#8e8e8e" stroke-width="1.7" stroke-linecap="round"><path d="M17 3l3 3-3 3M20 6H8a4 4 0 00-4 4M7 21l-3-3 3-3M4 18h12a4 4 0 004-4"/></svg></div>
+      <div><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#8e8e8e" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="12" cy="10" r="2.6"/><path d="M7.5 18a4.8 4.8 0 019 0"/></svg></div>
+    </div>
+
+    <div class="ig-grid" id="pGrid"></div>
+
+    <div class="ig-nav">
+      <svg class="ig-ico" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1h-5v-7H9v7H4a1 1 0 01-1-1z"/></svg>
+      <svg class="ig-ico" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M10 9l6 3-6 3z" fill="#000"/></svg>
+      <svg class="ig-ico" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.7" stroke-linejoin="round"><path d="M3 8l18-4-6 17-4-7z"/></svg>
+      <svg class="ig-ico" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <img class="me" id="pNavAv" alt="">
+    </div>
+  </div>
+  <div id="escape"></div>
+</div>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+(function(){
+  const $ = s => document.querySelector(s);
+
+  // Android/desktop install prompt
+  let deferredPrompt = null;
+  window.addEventListener("beforeinstallprompt", e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const b = document.getElementById("installBtn");
+    if (b) b.hidden = false;
+  });
+  window.addEventListener("DOMContentLoaded", () => {
+    const b = document.getElementById("installBtn");
+    if (!b) return;
+    b.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      b.hidden = true;
+    });
+  });
+  window.addEventListener("appinstalled", () => {
+    const b = document.getElementById("installBtn");
+    if (b) b.hidden = true;
+  });
+
+  const DEFAULT_NAMES = [
+    "sara.mk","alihaddad","nourrr_","3omar","dana.h","khaledwrites","rami_92","layal.s",
+    "the_real_zaid","mariam.jpg","hussein.ig","tala___","fadi.kh","yasmina_a","bilalx",
+    "reem.designs","joe.abou","salma_92","tarek.m","noor.alk","chrisj","aya.ibrahim",
+    "mo.saleh","lea.rz","hadi_","zeina.b","karim.dxb","nadine.h","wissam__","rana.k",
+    "abed.9","jana.sy","elie.abi","farah.mm","samer.t","dina.rf","ziad.n","maya.hb",
+    "omar.alk","lynn.gh","raed_87","joelle.p","basel.x","tia.marie","hassan.q","kinda_a",
+    "georges.h","rola.n","waleed.s","nay.la","adnan.b","perla.j","imad.k","yara.sh",
+    "shadi.m","mira.aa","talal.99","carla.eid","fouad_","nathalie.z","ammar.r","hiba.d",
+    "roy.g","salim.ba","nisrine_","majd.kh","cynthia.h","haitham.a","aline.r","jad.n",
+    "sandra.mk","ayman.f","dalia.o","ghassan_","tania.b","mahmoud.h","serena.k","ibrahim.z",
+    "rita.el","nabil.t","souad.m","charbel.h","amal.j","hazem.d","lara.ss","mustafa.b",
+    "vanessa.n","yousef.q","marwa.a","antoine.k","huda.s","rabih.f","joudy_","tamer.el",
+    "nour.hab","kareem.w","stephanie.g","osama.n","zeina.tt","bassam.h","luna.mk","raafat_",
+    "danaaa.x","emile.s","asma.k","fares.m","nada.sh","tony.hb","malak.r","sami.dxb",
+    "priya.n","james_k","dan.oconnor","sofia.rm","luca.b","aisha.n","tom.whitfield","yuki.s",
+    "marco.p","hannah.lee","dmitri_v","chloe.mrt","raj.patel","erin.k","pablo.g","zoe.hart",
+    "ahmedvibes","the.food.guy","dxb_eats","riyadh.nights","beirutbynight","abudhabi.foodie",
+    "gulf.traveller","levantine.plates","hungryinjeddah","doha.diaries","kite.beach.life",
+    "mrs.ghazal","cousin.rami","uncle.tony","teta.mona","habibi.hub","yalla.now","wallah.bro",
+    "gymrat.dxb","liftwithnadia","protein.pasha","runningbeirut","padel.club.dxb","f45.sara",
+    "ecom.dispatch","retailmedia.io","the.growth.guy","dtc.daily","marketplace.mo","seo.rania",
+    "founder.karim","vc.watcher","biz.dev.dana","adland.me","brandsofarabia","commerce.weekly",
+    "just.scrolling","random.viewer.1","idk.mate","lurker.no.7","new.here.hi","phone.on.5%",
+    "sleepy.head.x","up.too.late","midnight.snacker","office.bored","waiting.for.uber",
+    "sarcasm.dept","professional.hater","comment.section.mvp","first.always","spam.free.zone",
+    "layla.99","tarik_b","hana.mz","said.el","rima.kk","nizar.h","lea.bou","fady.s",
+    "amir.dxb","joyce.m","kamal.n","rasha.t","walid.gh","alia.z","mounir_","dania.h",
+    "sherif.a","noha.k","bilal.rz","mira.jo","yasser.h","salwa.n","tarek.dxb","hala.m"
+  ];
+
+  const PACKS = {
+    "Everyday": [
+      "first!!","yaaa Maher 🔥","we can hear you loud","sound is 🔥","hi from Riyadh 👋",
+      "hi from Dubai","say hi to Beirut 🇱🇧","how many people watching wallah","turn the camera around!",
+      "who's with you?","this is so random 😂","been waiting for this live","legend","10/10 no notes",
+      "my guy went live at 6am","yalla talk to us","can you say my name 🙏","I'm sharing this with everyone",
+      "👏👏👏","screen froze for me, anyone else?","the lighting is unreal","waiting for the story",
+      "{name} same 😂","{name} exactly what I was thinking","agree with {name}","{name} said it best",
+      "{name} where are you from?","no way {name} is here too","{name} tell him!!","stop it {name} 😭",
+      "we lost you for a second","much better now","he can't see the comments 😂","MAHER LOOK DOWN",
+      "someone tell him to read the chat","hi mom","quality is crazy actually","how long are you live for?",
+      "don't end it yet","one more minute please"
+    ],
+    "Food": [
+      "what are you eating??","drop the location 📍","that looks unreal","is it worth the price?",
+      "best manakish in Dubai, go","I'm so hungry now, thanks","{name} take me there","order me one",
+      "the sauce though 🤤","how much was that?","is it halal?","take a bite on camera",
+      "rate it out of 10","{name} we're going this weekend","I've been twice this month",
+      "book a table for us","that portion is tiny for the price","the bread looks fresh",
+      "overrated or underrated?","who's paying 😂","don't forget dessert","this is food p*rn",
+      "my diet just ended","what's the name of the place again","save some for us","chef's kiss 👨‍🍳",
+      "{name} you said the same about the last one","is it spicy?","garlic sauce or nothing"
+    ],
+    "Travel": [
+      "where is this??","which hotel?","how's the weather there","adding it to the list",
+      "how many days are you staying?","is it expensive?","best time to go?","that view 😍",
+      "{name} we should do this trip","how was the flight?","direct or connecting?",
+      "did you rent a car?","is it safe for families?","show us the room","what's the visa situation",
+      "jet lag hitting?","take us with you next time","the sea looks unreal","which airline?",
+      "how far from the airport?","{name} book it now","I was there last summer","packing tips?",
+      "did you ski today?","snow looks perfect","what's the temperature","postcard vibes fr"
+    ],
+    "Business & eCommerce": [
+      "great point on retail media","what's your take on GEO?","will you share the deck?",
+      "AI is eating search fr","are marketplaces still worth it in 2026?","how do you measure incrementality",
+      "what's your CAC looking like","{name} good question","link to the report please",
+      "which platform converts best in GCC?","talk about the Saudi market","is TikTok Shop live here yet",
+      "how big is the team?","hiring?","what tools do you use","first-party data or bust",
+      "attribution is broken and we all know it","{name} agree 100%","can you repeat that last part",
+      "any case studies?","what's the biggest mistake brands make","budget split advice?",
+      "how long until results","D2C or marketplace first?","the deck slide before this one 🙏",
+      "this should be a webinar","screenshotting this","what's next after search"
+    ],
+    "Gym": [
+      "what's the split?","form check 👀","how many sets","natty or not 😂","what are you eating pre workout",
+      "how long have you been training","{name} we're going tomorrow","leg day when",
+      "what's your bench","creatine or no","that's ego lifting bro","respect at your age honestly",
+      "how many times a week","cardio or weights first","show the full set","posture!!",
+      "{name} you skipped again didn't you","protein target per day?","which gym is this",
+      "trainer or self taught","recovery days?","stretch first please","he's actually consistent though"
+    ],
+    "Arabizi": [
+      "yalla habibi","shu hal helwe 😍","3anjad?","ya3ne wow","sha6er","allah y3teek el 3afye",
+      "kifak ya zalame","wein hal ghaybe","shu hal live el mfaje2","3am nesma3ak mnee7",
+      "min wein 3am tbath","habibi el 2alb ❤️","ma sada2t","3ala rasi","tislam eedak",
+      "{name} sa7 lsanak","{name} wallah 3ala 2albe","khalas ana rayeh akol","2ol shi",
+      "salem 3ala el shabab","bkeer 3aleik","el sout mesh wade7","3am tetsala 3lena 😂",
+      "hala wallah","min Riyadh 👋","min el Kuwait ❤️","min Doha 🇶🇦"
+    ],
+    "Prank": [
+      "is that really him","he doesn't know we're watching 😭","someone screenshot this",
+      "this is going viral","tag him tag him","the guy behind him has no idea 😂",
+      "{name} are you seeing this","turn around!!","she's staring at you","the waiter is confused",
+      "act natural","everyone in the mall is watching","{name} I'm crying 😂😂",
+      "he's committed to the bit","cameraman never misses","this is too much","stop it 😭",
+      "how is nobody reacting","the confidence is unreal","clip this immediately",
+      "sending this to the group chat","he's going to get caught","play it cool"
+    ]
+  };
+  const DEFAULT_COMMENTS = PACKS["Everyday"];
+  const AV_COLORS = ["#e0476b","#3f7fd8","#d98b1e","#3fa46a","#8a5cd1","#c4553f","#2e9aa8","#b03f8f"];
+  const GIFTS = ["sent a Rose 🌹","sent a Finger Heart 🫰","sent 5 Roses 🌹","sent a Perfume ✨","sent a Doughnut 🍩"];
+
+  const RATE_WORDS = ["Off","Trickle","Trickle","Calm","Calm","Steady","Busy","Busy","Buzzing","Buzzing","Chaos"];
+
+  const S = {
+    avatar:null, name:"maherghazal", verified:true, skin:"ig", camera:"user",
+    viewers:4200, trend:"climb", chatrate:6, heartrate:6, joins:true,
+    comments:DEFAULT_COMMENTS.join("\n"), names:DEFAULT_NAMES.join("\n"),
+    pack:"Everyday", endMode:"profile", shot:null, grid:[],
+    dispname:"Maher Ghazal", posts:"1,335", followers:"19.4K", following:"656",
+    bio:"Food, Sarcasm, and Random Stuff", website:"www.maherghazal.com",
+    dash:"30.5K views in the last 30 days.",
+    highlights:"Italy 2025, Lebanon 2025, Austria Ski Trip, Habibi"
+  };
+  const TEXT_FIELDS = ["dispname","posts","followers","following","bio","website","dash","highlights"];
+
+  /* ---------- setup wiring ---------- */
+  const els = {
+    avPreview:$("#avPreview"), pickAvatar:$("#pickAvatar"), avatarFile:$("#avatarFile"),
+    uname:$("#uname"), verified:$("#verified"), skin:$("#skin"), camera:$("#camera"),
+    viewers:$("#viewers"), trend:$("#trend"), chatrate:$("#chatrate"), chatrateV:$("#chatrateV"),
+    heartrate:$("#heartrate"), heartrateV:$("#heartrateV"), joins:$("#joins"),
+    comments:$("#comments"), names:$("#names")
+  };
+
+  function paintSetup(){
+    els.uname.value = S.name;
+    els.verified.setAttribute("aria-pressed", S.verified);
+    [...els.skin.children].forEach(b => b.setAttribute("aria-pressed", b.dataset.skin === S.skin));
+    els.camera.value = S.camera;
+    els.viewers.value = S.viewers;
+    els.trend.value = S.trend;
+    els.chatrate.value = S.chatrate; els.chatrateV.textContent = RATE_WORDS[S.chatrate];
+    els.heartrate.value = S.heartrate; els.heartrateV.textContent = RATE_WORDS[S.heartrate];
+    els.joins.setAttribute("aria-pressed", S.joins);
+    els.comments.value = S.comments;
+    els.names.value = S.names;
+    TEXT_FIELDS.forEach(k => { const el = document.getElementById(k); if (el) el.value = S[k]; });
+    [...$("#endMode").children].forEach(b => b.setAttribute("aria-pressed", b.dataset.end === S.endMode));
+    $("#shotBox").hidden = S.endMode !== "shot";
+    $("#profBox").hidden = S.endMode !== "profile";
+    paintPacks(); paintThumbs(); paintNameCount();
+    paintAvatar();
+  }
+
+  function paintPacks(){
+    const box = $("#packs");
+    box.innerHTML = "";
+    Object.keys(PACKS).forEach(k => {
+      const b = document.createElement("button");
+      b.className = "chip"; b.textContent = k;
+      b.setAttribute("aria-pressed", k === S.pack);
+      b.addEventListener("click", () => { S.pack = k; paintPacks(); save(); });
+      box.appendChild(b);
+    });
+  }
+  function paintNameCount(){
+    const n = lines(S.names).length;
+    $("#nameCount").textContent = n + " account" + (n === 1 ? "" : "s") + " in rotation.";
+  }
+  function paintThumbs(){
+    const g = $("#gridThumbs"); g.innerHTML = "";
+    S.grid.forEach((src, i) => {
+      const im = document.createElement("img"); im.src = src; im.alt = "";
+      im.addEventListener("click", () => { S.grid.splice(i,1); paintThumbs(); save(); });
+      g.appendChild(im);
+    });
+    for (let i = S.grid.length; i < 9; i++){
+      const d = document.createElement("div"); d.className = "empty"; g.appendChild(d);
+    }
+    const st = $("#shotThumb"); st.innerHTML = "";
+    if (S.shot){
+      const im = document.createElement("img"); im.src = S.shot; im.alt = "";
+      im.addEventListener("click", () => { S.shot = null; paintThumbs(); save(); });
+      st.appendChild(im);
+    }
+  }
+
+  function shrink(file, maxW, quality){
+    return new Promise(res => {
+      const r = new FileReader();
+      r.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const c = document.createElement("canvas");
+          const scale = Math.min(1, maxW / img.width);
+          c.width = Math.round(img.width * scale);
+          c.height = Math.round(img.height * scale);
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+          res(c.toDataURL("image/jpeg", quality));
+        };
+        img.src = r.result;
+      };
+      r.readAsDataURL(file);
+    });
+  }
+
+  $("#endMode").addEventListener("click", e => {
+    const b = e.target.closest("button[data-end]"); if(!b) return;
+    S.endMode = b.dataset.end;
+    [...$("#endMode").children].forEach(x => x.setAttribute("aria-pressed", x === b));
+    $("#shotBox").hidden = S.endMode !== "shot";
+    $("#profBox").hidden = S.endMode !== "profile";
+    save();
+  });
+  $("#loadPack").addEventListener("click", () => {
+    S.comments = PACKS[S.pack].join("\n"); els.comments.value = S.comments; save();
+  });
+  $("#addPack").addEventListener("click", () => {
+    const merged = [...new Set(lines(S.comments).concat(PACKS[S.pack]))];
+    S.comments = merged.join("\n"); els.comments.value = S.comments; save();
+  });
+  $("#pickShot").addEventListener("click", () => $("#shotFile").click());
+  $("#shotFile").addEventListener("change", async e => {
+    const f = e.target.files && e.target.files[0]; if(!f) return;
+    S.shot = await shrink(f, 900, .82); paintThumbs(); save();
+  });
+  $("#pickGrid").addEventListener("click", () => $("#gridFile").click());
+  $("#gridFile").addEventListener("change", async e => {
+    const files = [...(e.target.files||[])].slice(0, 12 - S.grid.length);
+    for (const f of files) S.grid.push(await shrink(f, 420, .78));
+    paintThumbs(); save(); e.target.value = "";
+  });
+  TEXT_FIELDS.forEach(k => {
+    const el = document.getElementById(k); if(!el) return;
+    el.addEventListener("input", () => { S[k] = el.value; save(); });
+  });
+  function paintAvatar(){
+    const initial = (S.name || "?").trim().charAt(0).toUpperCase() || "?";
+    if (S.avatar){
+      els.avPreview.outerHTML = '<img class="av" id="avPreview" src="'+S.avatar+'" alt="">';
+      els.avPreview = $("#avPreview");
+    } else {
+      els.avPreview.outerHTML = '<div class="av" id="avPreview">'+initial+'</div>';
+      els.avPreview = $("#avPreview");
+    }
+  }
+
+  els.pickAvatar.addEventListener("click", () => els.avatarFile.click());
+  els.avatarFile.addEventListener("change", e => {
+    const f = e.target.files && e.target.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const c = document.createElement("canvas"), size = 220;
+        c.width = c.height = size;
+        const ctx = c.getContext("2d");
+        const s = Math.min(img.width, img.height);
+        ctx.drawImage(img, (img.width-s)/2, (img.height-s)/2, s, s, 0, 0, size, size);
+        S.avatar = c.toDataURL("image/jpeg", .82);
+        paintAvatar(); save();
+      };
+      img.src = r.result;
+    };
+    r.readAsDataURL(f);
+  });
+
+  els.uname.addEventListener("input", () => { S.name = els.uname.value; if(!S.avatar) paintAvatar(); save(); });
+  els.verified.addEventListener("click", () => { S.verified = !S.verified; els.verified.setAttribute("aria-pressed", S.verified); save(); });
+  els.joins.addEventListener("click", () => { S.joins = !S.joins; els.joins.setAttribute("aria-pressed", S.joins); save(); });
+  els.skin.addEventListener("click", e => {
+    const b = e.target.closest("button[data-skin]"); if(!b) return;
+    S.skin = b.dataset.skin;
+    [...els.skin.children].forEach(x => x.setAttribute("aria-pressed", x === b));
+    save();
+  });
+  els.camera.addEventListener("change", () => { S.camera = els.camera.value; save(); });
+  els.viewers.addEventListener("input", () => { S.viewers = Math.max(1, parseInt(els.viewers.value||"1",10)); save(); });
+  els.trend.addEventListener("change", () => { S.trend = els.trend.value; save(); });
+  els.chatrate.addEventListener("input", () => { S.chatrate = +els.chatrate.value; els.chatrateV.textContent = RATE_WORDS[S.chatrate]; save(); });
+  els.heartrate.addEventListener("input", () => { S.heartrate = +els.heartrate.value; els.heartrateV.textContent = RATE_WORDS[S.heartrate]; save(); });
+  els.comments.addEventListener("input", () => { S.comments = els.comments.value; save(); });
+  els.names.addEventListener("input", () => { S.names = els.names.value; paintNameCount(); save(); });
+
+  /* ---------- persistence (best effort) ---------- */
+  let saveTimer = null;
+  function save(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(async () => {
+      try { await window.storage.set("golive:settings", JSON.stringify(S)); } catch(e){}
+    }, 400);
+  }
+  async function load(){
+    try {
+      const r = await window.storage.get("golive:settings");
+      if (r && r.value) Object.assign(S, JSON.parse(r.value));
+    } catch(e){}
+    paintSetup();
+  }
+  load();
+
+  /* ---------- live ---------- */
+  const live = $("#live"), setup = $("#setup"), profile = $("#profile");
+  const chat = $("#chat"), heartsBox = $("#hearts"), vcount = $("#vcount");
+  const cam = $("#cam"), fallback = $("#fallback");
+  let stream = null, timers = [], viewers = 0, peak = 0, facing = "user";
+
+  function fmt(n){
+    return n >= 1000000 ? (n/1000000).toFixed(1).replace(/\.0$/,"")+"M"
+         : n >= 10000 ? (n/1000).toFixed(1).replace(/\.0$/,"")+"K"
+         : n >= 1000 ? n.toLocaleString("en-US") : String(n);
+  }
+  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function lines(t){ return String(t||"").split("\n").map(s => s.trim()).filter(Boolean); }
+
+  function camProblem(title, body){
+    $("#camerrTitle").textContent = title;
+    $("#camerrBody").textContent = body;
+    $("#camerr").classList.add("on");
+  }
+
+  async function startCamera(mode){
+    stopCamera();
+    $("#camerr").classList.remove("on");
+    if (mode === "none"){ cam.style.display = "none"; return; }
+
+    const inFrame = window.self !== window.top;
+    if (!window.isSecureContext){
+      cam.style.display = "none";
+      camProblem("The page isn't on a secure address",
+        "Browsers only hand over the camera on an https:// page. This one is running from " +
+        location.protocol + "// — put the file on any https host, or open it from a link rather than from your files.");
+      return;
+    }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      cam.style.display = "none";
+      camProblem("This window can't reach the camera",
+        inFrame ? "The page is running inside a preview frame, which blocks the camera. Open the file in your browser as its own tab."
+                : "This browser doesn't expose the camera to web pages. Try Chrome or Safari.");
+      return;
+    }
+
+    const attempts = [
+      { video:{ facingMode:{ ideal:mode }, width:{ ideal:1280 } }, audio:false },
+      { video:{ facingMode:mode }, audio:false },
+      { video:true, audio:false }
+    ];
+    let lastErr = null;
+    for (const c of attempts){
+      try {
+        stream = await navigator.mediaDevices.getUserMedia(c);
+        cam.srcObject = stream;
+        cam.style.display = "block";
+        cam.classList.toggle("mirror", mode === "user");
+        await cam.play().catch(()=>{});
+        return;
+      } catch(e){ lastErr = e; }
+    }
+
+    cam.style.display = "none";
+    const n = lastErr && lastErr.name;
+    if (n === "NotAllowedError"){
+      camProblem("Camera permission was refused",
+        inFrame ? "The preview frame isn't allowed to ask for the camera. Open the file in your browser as its own tab, then allow it."
+                : "Tap the icon next to the address bar, set Camera to Allow, then tap Try again.");
+    } else if (n === "NotFoundError" || n === "OverconstrainedError"){
+      camProblem("No camera found", "This device isn't offering a camera to the browser.");
+    } else if (n === "NotReadableError"){
+      camProblem("Camera is busy", "Another app has hold of it. Close your camera or video apps, then tap Try again.");
+    } else {
+      camProblem("Camera didn't start", (n || "Unknown error") + ". Tap Try again, or carry on with the dark backdrop.");
+    }
+  }
+  function stopCamera(){
+    if (stream){ stream.getTracks().forEach(t => t.stop()); stream = null; }
+    cam.srcObject = null;
+  }
+
+  function addMsg(node){
+    chat.appendChild(node);
+    while (chat.children.length > 8) chat.removeChild(chat.firstChild);
+  }
+  let lastName = null;
+  function commentEl(){
+    const names = lines(S.names).length ? lines(S.names) : DEFAULT_NAMES;
+    const comments = lines(S.comments).length ? lines(S.comments) : DEFAULT_COMMENTS;
+    let who = pick(names), text = pick(comments);
+    if (text.includes("{name}")){
+      if (!lastName){
+        // nobody to reply to yet — pick a plain line instead
+        const plain = comments.filter(c => !c.includes("{name}"));
+        text = plain.length ? pick(plain) : text.replace(/\{name\}/g, pick(names));
+      } else {
+        while (who === lastName && names.length > 1) who = pick(names);
+        text = text.replace(/\{name\}/g, "@" + lastName);
+      }
+    }
+    lastName = who;
+    const d = document.createElement("div"); d.className = "msg";
+    const ic = document.createElement("span"); ic.className = "ic";
+    ic.style.background = AV_COLORS[who.charCodeAt(0) % AV_COLORS.length];
+    ic.textContent = who.charAt(0).toUpperCase();
+    const tx = document.createElement("div"); tx.className = "tx";
+    const b = document.createElement("b"); b.textContent = who;
+    tx.appendChild(b); tx.appendChild(document.createTextNode(text));
+    d.appendChild(ic); d.appendChild(tx);
+    return d;
+  }
+  function sysEl(text){
+    const d = document.createElement("div"); d.className = "msg sys";
+    const tx = document.createElement("div"); tx.className = "tx"; tx.textContent = text;
+    d.appendChild(tx); return d;
+  }
+  function giftEl(who){
+    const d = document.createElement("div"); d.className = "msg";
+    const g = document.createElement("div"); g.className = "gift";
+    g.textContent = who + " " + pick(GIFTS);
+    d.appendChild(g); return d;
+  }
+
+  function heart(x){
+    const d = document.createElement("div"); d.className = "h";
+    d.style.setProperty("--dur", (3.2 + Math.random()*2.4) + "s");
+    d.style.left = (14 + Math.random()*46) + "px";
+    const size = 20 + Math.random()*14;
+    const hue = pick(["#ff3b6b","#ff7ba8","#ffd166","#7ee0ff","#b388ff","#ff5a3c"]);
+    d.innerHTML = '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="'+hue+'"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0112 7a4.6 4.6 0 018 3.6C20 16.1 12 21 12 21z"/></svg>';
+    heartsBox.appendChild(d);
+    setTimeout(() => d.remove(), 6000);
+  }
+
+  function tapBurst(x, y){
+    const d = document.createElement("div"); d.className = "burst";
+    d.style.left = (x-16)+"px"; d.style.top = (y-16)+"px";
+    d.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="#ff3b6b"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0112 7a4.6 4.6 0 018 3.6C20 16.1 12 21 12 21z"/></svg>';
+    $("#tapfx").appendChild(d);
+    setTimeout(() => d.remove(), 800);
+    for (let i=0;i<3;i++) setTimeout(() => heart(), i*90);
+  }
+
+  function scheduleChat(){
+    if (S.chatrate === 0) return;
+    const base = 4200 / S.chatrate;
+    const t = setTimeout(() => {
+      const names = lines(S.names).length ? lines(S.names) : DEFAULT_NAMES;
+      const roll = Math.random();
+      if (S.joins && roll < .12) addMsg(sysEl(pick(names) + " joined"));
+      else if (S.joins && S.skin === "tt" && roll < .18) addMsg(giftEl(pick(names)));
+      else addMsg(commentEl());
+      scheduleChat();
+    }, base * (0.45 + Math.random()*1.3));
+    timers.push(t);
+  }
+
+  function scheduleHearts(){
+    if (S.heartrate === 0) return;
+    const base = 2600 / S.heartrate;
+    const t = setTimeout(() => {
+      const n = 1 + Math.floor(Math.random()*3);
+      for (let i=0;i<n;i++) setTimeout(heart, i*140);
+      scheduleHearts();
+    }, base * (0.4 + Math.random()*1.2));
+    timers.push(t);
+  }
+
+  function scheduleViewers(){
+    const t = setInterval(() => {
+      if (S.trend === "climb"){
+        viewers += Math.max(1, Math.round(viewers * (0.004 + Math.random()*0.012)));
+      } else if (S.trend === "wobble"){
+        const d = Math.round(viewers * (Math.random()*0.012));
+        viewers += Math.random() < .5 ? -d : d;
+        viewers = Math.max(1, viewers);
+      }
+      peak = Math.max(peak, viewers);
+      vcount.textContent = fmt(viewers);
+    }, 1800);
+    timers.push(t);
+  }
+
+  function goLive(){
+    viewers = Math.max(1, parseInt(els.viewers.value||"1",10));
+    peak = viewers;
+    S.viewers = viewers;
+    vcount.textContent = fmt(viewers);
+    chat.innerHTML = ""; heartsBox.innerHTML = "";
+
+    $("#liveName").textContent = S.name;
+    $("#liveVerified").style.display = S.verified ? "block" : "none";
+    const avHost = $("#liveAv");
+    if (S.avatar){
+      const img = document.createElement("img"); img.src = S.avatar; img.id = "liveAv"; img.alt = "";
+      avHost.replaceWith(img);
+    } else {
+      const sp = document.createElement("span"); sp.className = "ph"; sp.id = "liveAv";
+      sp.textContent = (S.name||"?").charAt(0).toUpperCase();
+      sp.style.background = AV_COLORS[0];
+      avHost.replaceWith(sp);
+    }
+
+    live.classList.toggle("tt", S.skin === "tt");
+    setup.style.display = "none"; profile.classList.remove("on"); live.classList.add("on");
+
+    facing = S.camera;
+    startCamera(facing);
+    scheduleChat(); scheduleHearts(); scheduleViewers();
+    try { screen.orientation && screen.orientation.lock && screen.orientation.lock("portrait").catch(()=>{}); } catch(e){}
+
+    // seed the chat so it doesn't start empty
+    for (let i=0;i<3;i++) setTimeout(() => addMsg(commentEl()), 350 + i*500);
+  }
+
+  function renderProfile(){
+    const shot = $("#shotImg"), built = $("#igBuilt");
+    if (S.endMode === "shot" && S.shot){
+      shot.src = S.shot; shot.hidden = false; built.style.display = "none";
+      return;
+    }
+    shot.hidden = true; built.style.display = "block";
+
+    $("#pHandle").textContent = S.name;
+    $("#pVerified").style.display = S.verified ? "block" : "none";
+    $("#pName").textContent = S.dispname;
+    $("#pBio").textContent = S.bio;
+    $("#pLink").textContent = S.website;
+    $("#pPosts").textContent = S.posts;
+    $("#pFollowers").textContent = S.followers;
+    $("#pFollowing").textContent = S.following;
+    $("#pDash").textContent = S.dash;
+
+    const avHost = $("#pAv");
+    if (S.avatar){
+      const img = document.createElement("img"); img.className = "ig-av"; img.id = "pAv"; img.src = S.avatar; img.alt = "";
+      avHost.replaceWith(img);
+    } else {
+      const d = document.createElement("div"); d.className = "ig-av"; d.id = "pAv";
+      d.textContent = (S.dispname || S.name || "?").charAt(0).toUpperCase();
+      avHost.replaceWith(d);
+    }
+    const nav = $("#pNavAv");
+    if (S.avatar) nav.src = S.avatar; else nav.style.visibility = "hidden";
+
+    const high = $("#pHigh"); high.innerHTML = "";
+    const newF = document.createElement("figure");
+    newF.innerHTML = '<div class="ring"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><figcaption>New</figcaption>';
+    high.appendChild(newF);
+    S.highlights.split(",").map(s => s.trim()).filter(Boolean).forEach((label, i) => {
+      const f = document.createElement("figure");
+      const ring = document.createElement("div"); ring.className = "ring";
+      if (S.grid[i]){ const im = document.createElement("img"); im.src = S.grid[i]; im.alt = ""; ring.appendChild(im); }
+      const cap = document.createElement("figcaption"); cap.textContent = label;
+      f.appendChild(ring); f.appendChild(cap); high.appendChild(f);
+    });
+
+    const grid = $("#pGrid"); grid.innerHTML = "";
+    const total = Math.max(9, S.grid.length);
+    for (let i = 0; i < total; i++){
+      const cell = document.createElement("div"); cell.className = "cell";
+      if (S.grid[i]){ const im = document.createElement("img"); im.src = S.grid[i]; im.alt = ""; cell.appendChild(im); }
+      grid.appendChild(cell);
+    }
+  }
+
+  function endLive(){
+    timers.forEach(t => { clearTimeout(t); clearInterval(t); });
+    timers = [];
+    stopCamera();
+    lastName = null;
+    live.classList.remove("on");
+    renderProfile();
+    profile.scrollTop = 0;
+    profile.classList.add("on");
+    save();
+  }
+
+  function backToSetup(){
+    profile.classList.remove("on");
+    live.classList.remove("on");
+    setup.style.display = "block";
+  }
+
+  // hidden exit: press and hold the top-right corner
+  let holdTimer = null;
+  const esc = $("#escape");
+  esc.addEventListener("pointerdown", () => { holdTimer = setTimeout(backToSetup, 900); });
+  ["pointerup","pointerleave","pointercancel"].forEach(ev =>
+    esc.addEventListener(ev, () => clearTimeout(holdTimer)));
+
+  $("#retryCam").addEventListener("click", () => startCamera(facing));
+  $("#skipCam").addEventListener("click", () => $("#camerr").classList.remove("on"));
+  $("#golive").addEventListener("click", goLive);
+  $("#endBtn").addEventListener("click", endLive);
+  $("#heartBtn").addEventListener("click", () => { for(let i=0;i<5;i++) setTimeout(heart, i*80); });
+  $("#flipBtn").addEventListener("click", () => {
+    if (S.camera === "none") return;
+    facing = facing === "user" ? "environment" : "user";
+    startCamera(facing);
+  });
+  $("#tapfx").addEventListener("pointerdown", e => tapBurst(e.clientX, e.clientY));
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && live.classList.contains("on")) { /* keep running */ }
+  });
+})();
+</script>
+</body>
+</html>
