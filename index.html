@@ -336,707 +336,6 @@
     </div>
     <div class="row">
       <div class="field">
-        <label class="f"  .switch{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .switch span{font-size:14.5px}
-  .toggle{width:48px;height:29px;border-radius:15px;background:#2b2b35;position:relative;transition:background .2s;flex:none}
-  .toggle::after{content:"";position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;background:#fff;transition:transform .2s}
-  .toggle[aria-pressed=true]{background:#4f5bd5}
-  .toggle[aria-pressed=true]::after{transform:translateX(19px)}
-
-  .hint{font-size:12px;color:#6b6b76;margin-top:8px;line-height:1.5}
-
-  #golive{position:fixed;left:18px;right:18px;bottom:26px;padding:16px;border-radius:16px;font-size:16px;font-weight:700;
-    background:linear-gradient(90deg,var(--ig2),var(--ig3),var(--ig4));box-shadow:0 10px 30px rgba(214,41,118,.35)}
-  #golive:active{transform:translateY(1px)}
-
-  /* ---------- LIVE ---------- */
-  #live{position:fixed;inset:0;display:none;overflow:hidden;background:#000}
-  #live.on{display:block}
-  #cam{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  #cam.mirror{transform:scaleX(-1)}
-  #fallback{position:absolute;inset:0;background:
-    radial-gradient(700px 500px at 30% 20%, #3a2b52, transparent 60%),
-    radial-gradient(600px 500px at 80% 80%, #1e3a4c, transparent 60%),#0a0a0e;}
-  .scrim-top{position:absolute;top:0;left:0;right:0;height:200px;background:linear-gradient(180deg,rgba(0,0,0,.65),transparent);pointer-events:none}
-  .scrim-bot{position:absolute;bottom:0;left:0;right:0;height:320px;background:linear-gradient(0deg,rgba(0,0,0,.72),transparent);pointer-events:none}
-
-  .topbar{position:absolute;top:0;left:0;right:0;padding:calc(14px + env(safe-area-inset-top)) 12px 0;display:flex;align-items:center;gap:8px}
-  .who{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.35);border-radius:22px;padding:5px 12px 5px 5px;backdrop-filter:blur(6px)}
-  .who img,.who .ph{width:32px;height:32px;border-radius:50%;object-fit:cover;background:#333;display:grid;place-items:center;font-size:13px;font-weight:700}
-  .who b{font-size:14px;font-weight:600;max-width:38vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .verified{width:13px;height:13px;flex:none}
-  .pill{font-size:12.5px;font-weight:700;letter-spacing:.04em;padding:6px 9px;border-radius:7px}
-  .pill.live{background:linear-gradient(90deg,#f9296b,#ff5a3c);text-transform:uppercase}
-  .pill.eyes{background:rgba(0,0,0,.42);display:flex;align-items:center;gap:5px;font-weight:600;font-variant-numeric:tabular-nums;backdrop-filter:blur(6px)}
-  .spacer{flex:1}
-  .xbtn{width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.42);display:grid;place-items:center;backdrop-filter:blur(6px)}
-
-
-  #chat{position:absolute;left:12px;bottom:calc(78px + env(safe-area-inset-bottom));width:74%;max-height:44vh;
-    display:flex;flex-direction:column;justify-content:flex-end;gap:9px;overflow:hidden;
-    -webkit-mask-image:linear-gradient(180deg,transparent,#000 22%);mask-image:linear-gradient(180deg,transparent,#000 22%)}
-  .msg{display:flex;gap:8px;align-items:flex-start;animation:rise .45s cubic-bezier(.2,.9,.3,1)}
-  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-  .msg .ic{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff}
-  .msg .tx{font-size:14px;line-height:1.34;text-shadow:0 1px 3px rgba(0,0,0,.55)}
-  .msg .tx b{font-weight:600;color:rgba(255,255,255,.72);margin-right:6px;font-size:13.5px}
-  .msg.sys .tx{color:rgba(255,255,255,.8);font-size:13px}
-  .gift{background:linear-gradient(90deg,rgba(255,0,80,.85),rgba(255,0,80,.25));border-radius:8px;padding:6px 10px;font-size:13px;
-        animation:rise .45s cubic-bezier(.2,.9,.3,1)}
-
-  .rail{position:absolute;right:10px;top:calc(84px + env(safe-area-inset-top));display:flex;flex-direction:column;gap:22px;align-items:center}
-  .railbtn{width:30px;height:30px;display:grid;place-items:center;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}
-  .railbtn svg{width:26px;height:26px}
-  .railbtn[aria-pressed=true] svg{opacity:.35}
-
-  .bottombar{position:absolute;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px}
-  .composer{flex:1;min-width:0;height:44px;border-radius:22px;border:1px solid rgba(255,255,255,.4);display:flex;align-items:center;
-    padding:0 6px 0 16px;background:rgba(0,0,0,.22);backdrop-filter:blur(4px)}
-  .composer input{flex:1;min-width:0;background:none;border:0;outline:none;font-size:14.5px;color:#fff;padding:0}
-  .composer input::placeholder{color:rgba(255,255,255,.75)}
-  .composer button{padding:8px 13px;border-radius:16px;font-size:13.5px;font-weight:700;color:#4d9fff}
-  .circbtn{width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.32);display:grid;place-items:center;backdrop-filter:blur(4px);flex:none}
-
-  .msg.host .tx b{color:#fff}
-  .msg.host .ic{box-shadow:0 0 0 2px #fff}
-  .msg.host .tag{font-size:10.5px;font-weight:700;letter-spacing:.04em;background:rgba(255,255,255,.9);color:#000;
-    border-radius:4px;padding:1px 5px;margin-right:6px;vertical-align:1px}
-
-  #hearts{position:absolute;right:6px;bottom:70px;width:90px;height:70vh;pointer-events:none;overflow:hidden}
-  .h{position:absolute;bottom:0;left:34px;animation:up var(--dur,4.2s) linear forwards}
-  .h svg{display:block;animation:sway 2.8s ease-in-out infinite alternate}
-  @keyframes up{to{transform:translateY(-70vh) scale(.55);opacity:0}}
-  @keyframes sway{from{transform:translateX(-16px) rotate(-8deg)}to{transform:translateX(16px) rotate(8deg)}}
-
-  #camerr{position:absolute;left:20px;right:20px;top:50%;transform:translateY(-50%);
-    background:rgba(18,18,22,.92);border:1px solid #2c2c36;border-radius:16px;padding:20px;display:none;backdrop-filter:blur(10px)}
-  #camerr.on{display:block}
-  #camerr h3{margin:0 0 8px;font-size:16px}
-  #camerr p{margin:0 0 16px;font-size:13.5px;line-height:1.55;color:#b9b9c4}
-  #camerr .row{gap:8px}
-  #camerr button{flex:1;padding:11px 0;border-radius:10px;font-size:14px;font-weight:600;text-align:center}
-  #retryCam{background:#4f5bd5}
-  #skipCam{background:#23232c}
-
-  #tapfx{position:absolute;inset:0}
-  .burst{position:absolute;pointer-events:none;animation:pop .7s ease-out forwards}
-  @keyframes pop{0%{transform:scale(.3);opacity:1}100%{transform:scale(1.5) translateY(-40px);opacity:0}}
-
-  /* ---------- ENDED ---------- */
-  /* ---------- pack chips ---------- */
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-  .chip{border:1px solid var(--line);background:#0e0e12;border-radius:999px;padding:8px 13px;font-size:13px;color:#c9c9d3}
-  .chip:active{background:#1b1b22}
-  .chip[aria-pressed=true]{background:#23232c;color:#fff;border-color:#3a3a46}
-  .packbtns{display:flex;gap:8px;margin-bottom:12px}
-  .packbtns .ghost{flex:1;text-align:center}
-  .thumbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-  .thumbs img{width:52px;height:66px;object-fit:cover;border-radius:6px}
-  .thumbs .empty{width:52px;height:66px;border-radius:6px;border:1px dashed #33333f}
-
-  /* ---------- INSTAGRAM PROFILE ---------- */
-  #profile{position:fixed;inset:0;display:none;background:#fff;color:#000;overflow-y:auto;overscroll-behavior:contain}
-  #profile.on{display:block}
-  #profile img{display:block}
-  .ig{padding-bottom:78px;font-size:15px}
-  .ig-shot{width:100%;height:auto}
-  .ig-top{display:flex;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 14px 8px}
-  .ig-top .mid{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-width:0}
-  .ig-top .mid b{font-size:21px;font-weight:700;letter-spacing:-.3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ig-ico{width:26px;height:26px;flex:none}
-  .ig-stats{display:flex;align-items:center;gap:8px;padding:10px 16px 4px}
-  .ig-av{width:86px;height:86px;border-radius:50%;object-fit:cover;background:#efefef;flex:none;
-         display:grid;place-items:center;font-size:30px;font-weight:700;color:#b9b9c0;border:1px solid #eee}
-  .ig-nums{flex:1;display:flex;justify-content:space-around;text-align:center}
-  .ig-nums b{display:block;font-size:19px;font-weight:700;letter-spacing:-.4px}
-  .ig-nums span{font-size:13.5px;color:#222}
-  .ig-bio{padding:12px 16px 0;line-height:1.42;font-size:14.5px}
-  .ig-bio .nm{font-weight:700;font-size:15px}
-  .ig-bio a{color:#00376b;text-decoration:none;word-break:break-all}
-  .ig-dash{margin:14px 16px 0;background:#f2f3f5;border-radius:12px;padding:13px 15px}
-  .ig-dash b{display:block;font-size:15px;font-weight:600}
-  .ig-dash span{font-size:13px;color:#666}
-  .ig-actions{display:flex;gap:8px;padding:12px 16px 0}
-  .ig-actions div{flex:1;background:#efefef;border-radius:9px;padding:9px 0;text-align:center;font-size:14px;font-weight:600}
-  .ig-high{display:flex;gap:16px;padding:18px 16px 4px;overflow-x:auto;scrollbar-width:none}
-  .ig-high::-webkit-scrollbar{display:none}
-  .ig-high figure{margin:0;width:66px;flex:none;text-align:center}
-  .ig-high .ring{width:66px;height:66px;border-radius:50%;border:1px solid #dbdbdb;overflow:hidden;display:grid;place-items:center;background:#fafafa}
-  .ig-high .ring img{width:100%;height:100%;object-fit:cover}
-  .ig-high figcaption{font-size:12px;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ig-tabs{display:flex;margin-top:16px;border-top:1px solid #dbdbdb}
-  .ig-tabs div{flex:1;padding:11px 0;display:grid;place-items:center;border-bottom:1.5px solid transparent}
-  .ig-tabs div.sel{border-bottom-color:#000}
-  .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px}
-  .ig-grid .cell{aspect-ratio:3/4;background:#e9e9ee;position:relative;overflow:hidden}
-  .ig-grid .cell img{width:100%;height:100%;object-fit:cover}
-  .ig-nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #efefef;
-          display:flex;justify-content:space-around;align-items:center;padding:11px 8px calc(11px + env(safe-area-inset-bottom))}
-  .ig-nav img.me{width:26px;height:26px;border-radius:50%;object-fit:cover}
-  #escape{position:fixed;top:0;right:0;width:64px;height:64px;z-index:9}
-
-  /* ---------- tiktok skin ---------- */
-  #live.tt .pill.live{background:var(--tt2);border-radius:3px;font-size:11.5px;letter-spacing:.06em}
-  #live.tt .pill.eyes{border-radius:20px;background:rgba(0,0,0,.32);padding:5px 11px}
-  #live.tt .who{border-radius:20px;background:rgba(0,0,0,.32);padding:4px 4px 4px 4px}
-  #live.tt .who b{font-size:13.5px;font-weight:700}
-  #live.tt .verified{display:none}
-  #live.tt .topbar{gap:6px;flex-wrap:wrap}
-
-  /* comments become dark pills */
-  #live.tt #chat{width:80%;gap:7px}
-  #live.tt .msg{align-items:center;background:rgba(0,0,0,.3);border-radius:16px;padding:5px 11px 5px 5px;
-    width:fit-content;max-width:100%;backdrop-filter:blur(2px)}
-  #live.tt .msg .ic{width:24px;height:24px;font-size:10px}
-  #live.tt .msg .tx{font-size:13.5px;text-shadow:none}
-  #live.tt .msg .tx b{display:block;color:rgba(255,255,255,.6);font-size:12px;font-weight:500;margin:0 0 1px}
-  #live.tt .msg.sys{background:rgba(120,90,220,.35)}
-  #live.tt .msg.host{background:rgba(255,0,80,.32)}
-  #live.tt .gift{background:none;padding:0;font-size:13px}
-
-  /* viewer avatar stack + rank chip */
-  .ttstack{display:none;align-items:center;gap:0}
-  #live.tt .ttstack{display:flex}
-  .ttstack i{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(0,0,0,.35);margin-left:-8px;display:block}
-  .ttstack i:first-child{margin-left:0}
-  .ttrank{display:none;align-items:center;gap:4px;background:rgba(0,0,0,.32);border-radius:20px;padding:5px 10px;
-    font-size:12px;font-weight:600;backdrop-filter:blur(6px)}
-  #live.tt .ttrank{display:flex}
-
-  /* gift banner */
-  #giftbar{position:absolute;left:12px;bottom:calc(150px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;pointer-events:none}
-  .giftcard{display:flex;align-items:center;gap:9px;background:linear-gradient(90deg,rgba(255,0,80,.92),rgba(255,90,60,.5));
-    border-radius:10px;padding:7px 14px 7px 7px;animation:slideIn .45s cubic-bezier(.2,.9,.3,1)}
-  .giftcard .ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
-  .giftcard .who{background:none;padding:0;font-size:12.5px;font-weight:700;display:block}
-  .giftcard .what{font-size:11.5px;opacity:.9}
-  .giftcard .emo{font-size:24px;margin-left:4px}
-  .giftcard .xn{font-size:17px;font-weight:800;font-style:italic}
-  @keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
-
-  /* tiktok bottom bar */
-  #live.tt .composer{border-radius:8px;border-color:rgba(255,255,255,.28)}
-  #live.tt .circbtn{border-radius:9px;background:rgba(0,0,0,.28)}
-
-  @media (prefers-reduced-motion: reduce){
-    .h,.h svg,.msg,.gift,.burst{animation-duration:.01ms!important;animation-iteration-count:1!important}
-    .h{display:none}
-  }
-</style>
-</head>
-<body>
-
-<!-- ============ SETUP ============ -->
-<div id="setup">
-  <div class="brand"><span class="dot"></span><h1>Go Live</h1></div>
-  <p class="sub">Set the stage, then start. Everything on screen is simulated — no stream leaves this phone.</p>
-  <button class="ghost" id="installBtn" hidden style="margin-bottom:18px">📲 Install as an app</button>
-
-  <div class="card">
-    <h2>Profile</h2>
-    <div class="avatar-pick">
-      <div class="av" id="avPreview">M</div>
-      <div>
-        <button class="ghost" id="pickAvatar">Choose photo</button>
-        <input type="file" id="avatarFile" accept="image/*" hidden>
-        <div class="hint">Screenshot your profile picture and pick it here.</div>
-      </div>
-    </div>
-    <div class="row" style="margin-top:16px">
-      <div class="field">
-        <label class="f" for="uname">Username</label>
-        <input type="text" id="uname" value="maherghazal" autocapitalize="none" autocorrect="off">
-      </div>
-    </div>
-    <div class="row">
-      <div class="switch" style="flex:1">
-        <span>Verified badge</span>
-        <button class="toggle" id="verified" aria-pressed="true" aria-label="Verified badge"></button>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Look</h2>
-    <div class="seg" id="skin">
-      <button data-skin="ig" aria-pressed="true">Instagram</button>
-      <button data-skin="tt" aria-pressed="false">TikTok</button>
-    </div>
-    <div class="row" style="margin-top:14px">
-      <div class="field">
-        <label class="f" for="camera">Camera</label>
-        <select id="camera">
-          <option value="user">Front camera</option>
-          <option value="environment">Back camera</option>
-          <option value="none">No camera (dark backdrop)</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Audience</h2>
-    <div class="row">
-      <div class="field">
-        <label class="f" for="viewers">Starting viewers</label>
-        <input type="number" id="viewers" value="4200" min="1" max="9999999" inputmode="numeric">
-      </div>
-      <div class="field">
-        <label class="f" for="trend">Trend</label>
-        <select id="trend">
-          <option value="climb">Climbing</option>
-          <option value="wobble">Holding steady</option>
-          <option value="fixed">Locked</option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="field">
-        <label class="f" for="chatrate">Comment speed</label>
-        <div class="row"><input type="range" class="slider" id="chatrate" min="1" max="10" value="6"><span class="val" id="chatrateV">Busy</span></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="field">
-        <label class="f"(18,18,22,.92);border:1px solid #2c2c36;border-radius:16px;padding:20px;display:none;backdrop-filter:blur(10px)}
-  #camerr.on{display:block}
-  #camerr h3{margin:0 0 8px;font-size:16px}
-  #camerr p{margin:0 0 16px;font-size:13.5px;line-height:1.55;color:#b9b9c4}
-  #camerr .row{gap:8px}
-  #camerr button{flex:1;padding:11px 0;border-radius:10px;font-size:14px;font-weight:600;text-align:center}
-  #retryCam{background:#4f5bd5}
-  #skipCam{background:#23232c}
-
-  #tapfx{position:absolute;inset:0}
-  .burst{position:absolute;pointer-events:none;animation:pop .7s ease-out forwards}
-  @keyframes pop{0%{transform:scale(.3);opacity:1}100%{transform:scale(1.5) translateY(-40px);opacity:0}}
-
-  /* ---------- ENDED ---------- */
-  /* ---------- pack chips ---------- */
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-  .chip{border:1px solid var(--line);background:#0e0e12;border-radius:999px;padding:8px 13px;font-size:13px;color:#c9c9d3}
-  .chip:active{background:#1b1b22}
-  .chip[aria-pressed=true]{background:#23232c;color:#fff;border-color:#3a3a46}
-  .packbtns{display:flex;gap:8px;margin-bottom:12px}
-  .packbtns .ghost{flex:1;text-align:center}
-  .thumbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-  .thumbs img{width:52px;height:66px;object-fit:cover;border-radius:6px}
-  .thumbs .empty{width:52px;height:66px;border-radius:6px;border:1px dashed #33333f}
-
-  /* ---------- INSTAGRAM PROFILE ---------- */
-  #profile{position:fixed;inset:0;display:none;background:#fff;color:#000;overflow-y:auto;overscroll-behavior:contain}
-  #profile.on{display:block}
-  #profile img{display:block}
-  .ig{padding-bottom:78px;font-size:15px}
-  .ig-shot{width:100%;height:auto}
-  .ig-top{display:flex;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 14px 8px}
-  .ig-top .mid{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-width:0}
-  .ig-top .mid b{font-size:21px;font-weight:700;letter-spacing:-.3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ig-ico{width:26px;height:26px;flex:none}
-  .ig-stats{display:flex;align-items:center;gap:8px;padding:10px 16px 4px}
-  .ig-av{width:86px;height:86px;border-radius:50%;object-fit:cover;background:#efefef;flex:none;
-         display:grid;place-items:center;font-size:30px;font-weight:700;color:#b9b9c0;border:1px solid #eee}
-  .ig-nums{flex:1;display:flex;justify-content:space-around;text-align:center}
-  .ig-nums b{display:block;font-size:19px;font-weight:700;letter-spacing:-.4px}
-  .ig-nums span{font-size:13.5px;color:#222}
-  .ig-bio{padding:12px 16px 0;line-height:1.42;font-size:14.5px}
-  .ig-bio .nm{font-weight:700;font-size:15px}
-  .ig-bio a{color:#00376b;text-decoration:none;word-break:break-all}
-  .ig-dash{margin:14px 16px 0;background:#f2f3f5;border-radius:12px;padding:13px 15px}
-  .ig-dash b{display:block;font-size:15px;font-weight:600}
-  .ig-dash span{font-size:13px;color:#666}
-  .ig-actions{display:flex;gap:8px;padding:12px 16px 0}
-  .ig-actions div{flex:1;background:#efefef;border-radius:9px;padding:9px 0;text-align:center;font-size:14px;font-weight:600}
-  .ig-high{display:flex;gap:16px;padding:18px 16px 4px;overflow-x:auto;scrollbar-width:none}
-  .ig-high::-webkit-scrollbar{display:none}
-  .ig-high figure{margin:0;width:66px;flex:none;text-align:center}
-  .ig-high .ring{width:66px;height:66px;border-radius:50%;border:1px solid #dbdbdb;overflow:hidden;display:grid;place-items:center;background:#fafafa}
-  .ig-high .ring img{width:100%;height:100%;object-fit:cover}
-  .ig-high figcaption{font-size:12px;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ig-tabs{display:flex;margin-top:16px;border-top:1px solid #dbdbdb}
-  .ig-tabs div{flex:1;padding:11px 0;display:grid;place-items:center;border-bottom:1.5px solid transparent}
-  .ig-tabs div.sel{border-bottom-color:#000}
-  .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px}
-  .ig-grid .cell{aspect-ratio:3/4;background:#e9e9ee;position:relative;overflow:hidden}
-  .ig-grid .cell img{width:100%;height:100%;object-fit:cover}
-  .ig-nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #efefef;
-          display:flex;justify-content:space-around;align-items:center;padding:11px 8px calc(11px + env(safe-area-inset-bottom))}
-  .ig-nav img.me{width:26px;height:26px;border-radius:50%;object-fit:cover}
-  #escape{position:fixed;top:0;right:0;width:64px;height:64px;z-index:9}
-
-  /* ---------- tiktok skin ---------- */
-  #live.tt .pill.live{background:var(--tt2);border-radius:3px;font-size:11.5px;letter-spacing:.06em}
-  #live.tt .pill.eyes{border-radius:20px;background:rgba(0,0,0,.32);padding:5px 11px}
-  #live.tt .who{border-radius:20px;background:rgba(0,0,0,.32);padding:4px 4px 4px 4px}
-  #live.tt .who b{font-size:13.5px;font-weight:700}
-  #live.tt .verified{display:none}
-  #live.tt .topbar{gap:6px;flex-wrap:wrap}
-
-  /* comments become dark pills */
-  #live.tt #chat{width:80%;gap:7px}
-  #live.tt .msg{align-items:center;background:rgba(0,0,0,.3);border-radius:16px;padding:5px 11px 5px 5px;
-    width:fit-content;max-width:100%;backdrop-filter:blur(2px)}
-  #live.tt .msg .ic{width:24px;height:24px;font-size:10px}
-  #live.tt .msg .tx{font-size:13.5px;text-shadow:none}
-  #live.tt .msg .tx b{display:block;color:rgba(255,255,255,.6);font-size:12px;font-weight:500;margin:0 0 1px}
-  #live.tt .msg.sys{background:rgba(120,90,220,.35)}
-  #live.tt .msg.host{background:rgba(255,0,80,.32)}
-  #live.tt .gift{background:none;padding:0;font-size:13px}
-
-  /* viewer avatar stack + rank chip */
-  .ttstack{display:none;align-items:center;gap:0}
-  #live.tt .ttstack{display:flex}
-  .ttstack i{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(0,0,0,.35);margin-left:-8px;display:block}
-  .ttstack i:first-child{margin-left:0}
-  .ttrank{display:none;align-items:center;gap:4px;background:rgba(0,0,0,.32);border-radius:20px;padding:5px 10px;
-    font-size:12px;font-weight:600;backdrop-filter:blur(6px)}
-  #live.tt .ttrank{display:flex}
-
-  /* gift banner */
-  #giftbar{position:absolute;left:12px;bottom:calc(150px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;pointer-events:none}
-  .giftcard{display:flex;align-items:center;gap:9px;background:linear-gradient(90deg,rgba(255,0,80,.92),rgba(255,90,60,.5));
-    border-radius:10px;padding:7px 14px 7px 7px;animation:slideIn .45s cubic-bezier(.2,.9,.3,1)}
-  .giftcard .ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
-  .giftcard .who{background:none;padding:0;font-size:12.5px;font-weight:700;display:block}
-  .giftcard .what{font-size:11.5px;opacity:.9}
-  .giftcard .emo{font-size:24px;margin-left:4px}
-  .giftcard .xn{font-size:17px;font-weight:800;font-style:italic}
-  @keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
-
-  /* tiktok bottom bar */
-  #live.tt .composer{border-radius:8px;border-color:rgba(255,255,255,.28)}
-  #live.tt .circbtn{border-radius:9px;background:rgba(0,0,0,.28)}
-
-  @media (prefers-reduced-motion: reduce){
-    .h,.h svg,.msg,.gift,.burst{animation-duration:.01ms!important;animation-iteration-count:1!important}
-    .h{display:none}
-  }
-</style>
-</head>
-<body>
-
-<!-- ============ SETUP ============ -->
-<div id="setup">
-  <div class="brand"><span class="dot"></span><h1>Go Live</h1></div>
-  <p class="sub">Set the stage, then start. Everything on screen is simulated — no stream leaves this phone.</p>
-  <button class="ghost" id="installBtn" hidden style="margin-bottom:18px">📲 Install as an app</button>
-
-  <div class="card">
-    <h2>Profile</h2>
-    <div class="avatar-pick">
-      <div class="av" id="avPreview">M</div>
-      <div>
-        <button class="ghost" id="pickAvatar">Choose photo</button>
-        <input type="file" id="avatarFile" accept="image/*" hidden>
-        <div class="hint">Screenshot your profile picture and pick it here.</div>
-      </div>
-    </div>
-    <div class="row" style="margin-top:16px">
-      <div class="field">
-        <label class="f" for="uname">Username</label>
-        <input type="text" id="uname" value="maherghazal" autocapitalize="none" autocorrect="off">
-      </div>
-    </div>
-    <div class="row">
-      <div class="switch" style="flex:1">
-        <span>Verified badge</span>
-        <button class="toggle" id="verified" aria-pressed="true" aria-label="Verified badge"></button>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Look</h2>
-    <div class="seg" id="skin">
-      <button data-skin="ig" aria-pressed="true">Instagram</button>
-      <button data-skin="tt" aria-pressed="false">TikTok</button>
-    </div>
-    <div class="row" style="margin-top:14px">
-      <div class="field">
-        <label class="f" for="camera">Camera</label>
-        <select id="camera">
-          <option value="user">Front camera</option>
-          <option value="environment">Back camera</option>
-          <option value="none">No camera (dark backdrop)</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Audience</h2>
-    <div class="row">
-      <div class="field">
-        <label class="f" for="viewers">Starting viewers</label>
-        <input type="number" id="viewers" value="4200" min="1" max="9999999" inputmode="numeric">
-      </div>
-      <div class="field">
-        <label class="f" for="trend">Trend</label>
-        <select id="trend">
-          <option value="climb">Climbing</option>
-          <option value="wobble">Holding steady</option>
-          <option value="fixed">Locked</option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="field">
-        <label class="f" for="chatrate">Comment speed</label>
-        <div class="row"><input type="range" class="slider" id="chatrate" min="1" max="10" value="6"><span class="val" id="chatrateV">Busy</span></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="field">
-        <label class="f"  #setup{position:fixed;inset:0;overflow-y:auto;padding:22px 18px 120px;background:
-    radial-gradient(1200px 500px at 10% -10%, rgba(150,47,191,.28), transparent 60%),
-    radial-gradient(900px 400px at 100% 0%, rgba(250,126,30,.18), transparent 55%),
-    var(--ink);}
-  .brand{display:flex;align-items:center;gap:10px;margin-bottom:4px}
-  .dot{width:9px;height:9px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 rgba(255,45,85,.7);animation:pulse 2s infinite}
-  @keyframes pulse{70%{box-shadow:0 0 0 10px rgba(255,45,85,0)}100%{box-shadow:0 0 0 0 rgba(255,45,85,0)}}
-  h1{font-size:26px;letter-spacing:-.5px;margin:0;font-weight:700}
-  .sub{color:var(--muted);font-size:13.5px;margin:6px 0 22px;line-height:1.5}
-
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
-  .card h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:600}
-  .row{display:flex;gap:12px;align-items:center}
-  .row + .row{margin-top:14px}
-  label.f{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px}
-  .field{flex:1;min-width:0}
-  input[type=text],input[type=number],textarea,select{
-    width:100%;background:#0e0e12;border:1px solid var(--line);border-radius:10px;
-    padding:11px 12px;font-size:15px;outline:none;
-  }
-  input:focus,textarea:focus,select:focus{border-color:#4f5bd5;box-shadow:0 0 0 3px rgba(79,91,213,.25)}
-  textarea{resize:vertical;min-height:120px;line-height:1.6;font-size:14px}
-  select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#8b8b96 50%),linear-gradient(135deg,#8b8b96 50%,transparent 50%);
-    background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
-
-  .avatar-pick{display:flex;align-items:center;gap:14px}
-  .av{width:60px;height:60px;border-radius:50%;object-fit:cover;background:#222;border:2px solid #2f2f3a;flex:none;
-      display:grid;place-items:center;font-weight:700;font-size:20px;color:#6f6f7d}
-  .ghost{border:1px solid var(--line);border-radius:10px;padding:9px 14px;font-size:13.5px;background:#0e0e12}
-  .ghost:active{background:#17171d}
-
-  .seg{display:flex;background:#0e0e12;border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
-  .seg button{flex:1;padding:9px 0;border-radius:9px;font-size:13.5px;color:var(--muted);font-weight:600}
-  .seg button[aria-pressed=true]{background:#23232c;color:#fff}
-
-  .slider{width:100%;-webkit-appearance:none;height:3px;border-radius:3px;background:#2b2b35;outline:none}
-  .slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 8px rgba(0,0,0,.5)}
-  .slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:0}
-  .val{font-variant-numeric:tabular-nums;font-size:13px;color:#fff;min-width:52px;text-align:right}
-
-  .switch{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .switch span{font-size:14.5px}
-  .toggle{width:48px;height:29px;border-radius:15px;background:#2b2b35;position:relative;transition:background .2s;flex:none}
-  .toggle::after{content:"";position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;background:#fff;transition:transform .2s}
-  .toggle[aria-pressed=true]{background:#4f5bd5}
-  .toggle[aria-pressed=true]::after{transform:translateX(19px)}
-
-  .hint{font-size:12px;color:#6b6b76;margin-top:8px;line-height:1.5}
-
-  #golive{position:fixed;left:18px;right:18px;bottom:26px;padding:16px;border-radius:16px;font-size:16px;font-weight:700;
-    background:linear-gradient(90deg,var(--ig2),var(--ig3),var(--ig4));box-shadow:0 10px 30px rgba(214,41,118,.35)}
-  #golive:active{transform:translateY(1px)}
-
-  /* ---------- LIVE ---------- */
-  #live{position:fixed;inset:0;display:none;overflow:hidden;background:#000}
-  #live.on{display:block}
-  #cam{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  #cam.mirror{transform:scaleX(-1)}
-  #fallback{position:absolute;inset:0;background:
-    radial-gradient(700px 500px at 30% 20%, #3a2b52, transparent 60%),
-    radial-gradient(600px 500px at 80% 80%, #1e3a4c, transparent 60%),#0a0a0e;}
-  .scrim-top{position:absolute;top:0;left:0;right:0;height:200px;background:linear-gradient(180deg,rgba(0,0,0,.65),transparent);pointer-events:none}
-  .scrim-bot{position:absolute;bottom:0;left:0;right:0;height:320px;background:linear-gradient(0deg,rgba(0,0,0,.72),transparent);pointer-events:none}
-
-  .topbar{position:absolute;top:0;left:0;right:0;padding:calc(14px + env(safe-area-inset-top)) 12px 0;display:flex;align-items:center;gap:8px}
-  .who{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.35);border-radius:22px;padding:5px 12px 5px 5px;backdrop-filter:blur(6px)}
-  .who img,.who .ph{width:32px;height:32px;border-radius:50%;object-fit:cover;background:#333;display:grid;place-items:center;font-size:13px;font-weight:700}
-  .who b{font-size:14px;font-weight:600;max-width:38vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .verified{width:13px;height:13px;flex:none}
-  .pill{font-size:12.5px;font-weight:700;letter-spacing:.04em;padding:6px 9px;border-radius:7px}
-  .pill.live{background:linear-gradient(90deg,#f9296b,#ff5a3c);text-transform:uppercase}
-  .pill.eyes{background:rgba(0,0,0,.42);display:flex;align-items:center;gap:5px;font-weight:600;font-variant-numeric:tabular-nums;backdrop-filter:blur(6px)}
-  .spacer{flex:1}
-  .xbtn{width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.42);display:grid;place-items:center;backdrop-filter:blur(6px)}
-
-  /* tiktok skin tweaks */
-  #live.tt .pill.live{background:var(--tt2);border-radius:4px}
-  #live.tt .pill.eyes{border-radius:4px}
-  #live.tt .who{border-radius:6px}
-
-  #chat{position:absolute;left:12px;bottom:calc(78px + env(safe-area-inset-bottom));width:74%;max-height:44vh;
-    display:flex;flex-direction:column;justify-content:flex-end;gap:9px;overflow:hidden;
-    -webkit-mask-image:linear-gradient(180deg,transparent,#000 22%);mask-image:linear-gradient(180deg,transparent,#000 22%)}
-  .msg{display:flex;gap:8px;align-items:flex-start;animation:rise .45s cubic-bezier(.2,.9,.3,1)}
-  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-  .msg .ic{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff}
-  .msg .tx{font-size:14px;line-height:1.34;text-shadow:0 1px 3px rgba(0,0,0,.55)}
-  .msg .tx b{font-weight:600;color:rgba(255,255,255,.72);margin-right:6px;font-size:13.5px}
-  .msg.sys .tx{color:rgba(255,255,255,.8);font-size:13px}
-  .gift{background:linear-gradient(90deg,rgba(255,0,80,.85),rgba(255,0,80,.25));border-radius:8px;padding:6px 10px;font-size:13px;
-        animation:rise .45s cubic-bezier(.2,.9,.3,1)}
-
-  .bottombar{position:absolute;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px}
-  .fakeinput{flex:1;height:42px;border-radius:21px;border:1px solid rgba(255,255,255,.35);display:flex;align-items:center;
-    padding:0 16px;font-size:14px;color:rgba(255,255,255,.75);background:rgba(0,0,0,.18);backdrop-filter:blur(4px)}
-  .circbtn{width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.32);display:grid;place-items:center;backdrop-filter:blur(4px);flex:none}
-
-  #hearts{position:absolute;right:6px;bottom:70px;width:90px;height:70vh;pointer-events:none;overflow:hidden}
-  .h{position:absolute;bottom:0;left:34px;animation:up var(--dur,4.2s) linear forwards}
-  .h svg{display:block;animation:sway 1.4s ease-in-out infinite alternate}
-  @keyframes up{to{transform:translateY(-70vh) scale(.55);opacity:0}}
-  @keyframes sway{from{transform:translateX(-16px) rotate(-8deg)}to{transform:translateX(16px) rotate(8deg)}}
-
-  #camerr{position:absolute;left:20px;right:20px;top:50%;transform:translateY(-50%);
-    background:rgba(18,18,22,.92);border:1px solid #2c2c36;border-radius:16px;padding:20px;display:none;backdrop-filter:blur(10px)}
-  #camerr.on{display:block}
-  #camerr h3{margin:0 0 8px;font-size:16px}
-  #camerr p{margin:0 0 16px;font-size:13.5px;line-height:1.55;color:#b9b9c4}
-  #camerr .row{gap:8px}
-  #camerr button{flex:1;padding:11px 0;border-radius:10px;font-size:14px;font-weight:600;text-align:center}
-  #retryCam{background:#4f5bd5}
-  #skipCam{background:#23232c}
-
-  #tapfx{position:absolute;inset:0}
-  .burst{position:absolute;pointer-events:none;animation:pop .7s ease-out forwards}
-  @keyframes pop{0%{transform:scale(.3);opacity:1}100%{transform:scale(1.5) translateY(-40px);opacity:0}}
-
-  /* ---------- ENDED ---------- */
-  /* ---------- pack chips ---------- */
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-  .chip{border:1px solid var(--line);background:#0e0e12;border-radius:999px;padding:8px 13px;font-size:13px;color:#c9c9d3}
-  .chip:active{background:#1b1b22}
-  .chip[aria-pressed=true]{background:#23232c;color:#fff;border-color:#3a3a46}
-  .packbtns{display:flex;gap:8px;margin-bottom:12px}
-  .packbtns .ghost{flex:1;text-align:center}
-  .thumbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-  .thumbs img{width:52px;height:66px;object-fit:cover;border-radius:6px}
-  .thumbs .empty{width:52px;height:66px;border-radius:6px;border:1px dashed #33333f}
-
-  /* ---------- INSTAGRAM PROFILE ---------- */
-  #profile{position:fixed;inset:0;display:none;background:#fff;color:#000;overflow-y:auto;overscroll-behavior:contain}
-  #profile.on{display:block}
-  #profile img{display:block}
-  .ig{padding-bottom:78px;font-size:15px}
-  .ig-shot{width:100%;height:auto}
-  .ig-top{display:flex;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 14px 8px}
-  .ig-top .mid{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-width:0}
-  .ig-top .mid b{font-size:21px;font-weight:700;letter-spacing:-.3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ig-ico{width:26px;height:26px;flex:none}
-  .ig-stats{display:flex;align-items:center;gap:8px;padding:10px 16px 4px}
-  .ig-av{width:86px;height:86px;border-radius:50%;object-fit:cover;background:#efefef;flex:none;
-         display:grid;place-items:center;font-size:30px;font-weight:700;color:#b9b9c0;border:1px solid #eee}
-  .ig-nums{flex:1;display:flex;justify-content:space-around;text-align:center}
-  .ig-nums b{display:block;font-size:19px;font-weight:700;letter-spacing:-.4px}
-  .ig-nums span{font-size:13.5px;color:#222}
-  .ig-bio{padding:12px 16px 0;line-height:1.42;font-size:14.5px}
-  .ig-bio .nm{font-weight:700;font-size:15px}
-  .ig-bio a{color:#00376b;text-decoration:none;word-break:break-all}
-  .ig-dash{margin:14px 16px 0;background:#f2f3f5;border-radius:12px;padding:13px 15px}
-  .ig-dash b{display:block;font-size:15px;font-weight:600}
-  .ig-dash span{font-size:13px;color:#666}
-  .ig-actions{display:flex;gap:8px;padding:12px 16px 0}
-  .ig-actions div{flex:1;background:#efefef;border-radius:9px;padding:9px 0;text-align:center;font-size:14px;font-weight:600}
-  .ig-high{display:flex;gap:16px;padding:18px 16px 4px;overflow-x:auto;scrollbar-width:none}
-  .ig-high::-webkit-scrollbar{display:none}
-  .ig-high figure{margin:0;width:66px;flex:none;text-align:center}
-  .ig-high .ring{width:66px;height:66px;border-radius:50%;border:1px solid #dbdbdb;overflow:hidden;display:grid;place-items:center;background:#fafafa}
-  .ig-high .ring img{width:100%;height:100%;object-fit:cover}
-  .ig-high figcaption{font-size:12px;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ig-tabs{display:flex;margin-top:16px;border-top:1px solid #dbdbdb}
-  .ig-tabs div{flex:1;padding:11px 0;display:grid;place-items:center;border-bottom:1.5px solid transparent}
-  .ig-tabs div.sel{border-bottom-color:#000}
-  .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px}
-  .ig-grid .cell{aspect-ratio:3/4;background:#e9e9ee;position:relative;overflow:hidden}
-  .ig-grid .cell img{width:100%;height:100%;object-fit:cover}
-  .ig-nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #efefef;
-          display:flex;justify-content:space-around;align-items:center;padding:11px 8px calc(11px + env(safe-area-inset-bottom))}
-  .ig-nav img.me{width:26px;height:26px;border-radius:50%;object-fit:cover}
-  #escape{position:fixed;top:0;right:0;width:64px;height:64px;z-index:9}
-
-  @media (prefers-reduced-motion: reduce){
-    .h,.h svg,.msg,.gift,.burst{animation-duration:.01ms!important;animation-iteration-count:1!important}
-    .h{display:none}
-  }
-</style>
-</head>
-<body>
-
-<!-- ============ SETUP ============ -->
-<div id="setup">
-  <div class="brand"><span class="dot"></span><h1>Go Live</h1></div>
-  <p class="sub">Set the stage, then start. Everything on screen is simulated — no stream leaves this phone.</p>
-  <button class="ghost" id="installBtn" hidden style="margin-bottom:18px">📲 Install as an app</button>
-
-  <div class="card">
-    <h2>Profile</h2>
-    <div class="avatar-pick">
-      <div class="av" id="avPreview">M</div>
-      <div>
-        <button class="ghost" id="pickAvatar">Choose photo</button>
-        <input type="file" id="avatarFile" accept="image/*" hidden>
-        <div class="hint">Screenshot your profile picture and pick it here.</div>
-      </div>
-    </div>
-    <div class="row" style="margin-top:16px">
-      <div class="field">
-        <label class="f" for="uname">Username</label>
-        <input type="text" id="uname" value="maherghazal" autocapitalize="none" autocorrect="off">
-      </div>
-    </div>
-    <div class="row">
-      <div class="switch" style="flex:1">
-        <span>Verified badge</span>
-        <button class="toggle" id="verified" aria-pressed="true" aria-label="Verified badge"></button>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Look</h2>
-    <div class="seg" id="skin">
-      <button data-skin="ig" aria-pressed="true">Instagram</button>
-      <button data-skin="tt" aria-pressed="false">TikTok</button>
-    </div>
-    <div class="row" style="margin-top:14px">
-      <div class="field">
-        <label class="f" for="camera">Camera</label>
-        <select id="camera">
-          <option value="user">Front camera</option>
-          <option value="environment">Back camera</option>
-          <option value="none">No camera (dark backdrop)</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Audience</h2>
-    <div class="row">
-      <div class="field">
-        <label class="f" for="viewers">Starting viewers</label>
-        <input type="number" id="viewers" value="4200" min="1" max="9999999" inputmode="numeric">
-      </div>
-      <div class="field">
-        <label class="f" for="trend">Trend</label>
-        <select id="trend">
-          <option value="climb">Climbing</option>
-          <option value="wobble">Holding steady</option>
-          <option value="fixed">Locked</option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="field">
-        <label class="f" for="chatrate">Comment speed</label>
-        <div class="row"><input type="range" class="slider" id="chatrate" min="1" max="10" value="6"><span class="val" id="chatrateV">Busy</span></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="field">
         <label class="f" for="heartrate">Likes</label>
         <div class="row"><input type="range" class="slider" id="heartrate" min="0" max="10" value="6"><span class="val" id="heartrateV">Steady</span></div>
       </div>
@@ -1142,17 +441,44 @@
     </div>
     <span class="pill live">Live</span>
     <span class="pill eyes"><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M12 5c-5 0-9 4.5-10 7 1 2.5 5 7 10 7s9-4.5 10-7c-1-2.5-5-7-10-7zm0 11a4 4 0 110-8 4 4 0 010 8z"/></svg><span id="vcount">0</span></span>
+    <span class="ttstack" id="ttStack"></span>
+    <span class="ttrank" id="ttRank">🏆 <span id="rankNum">Top 3</span></span>
     <span class="spacer"></span>
     <button class="xbtn" id="endBtn" aria-label="End live"><svg width="15" height="15" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
   </div>
 
   <div id="chat"></div>
+  <div id="giftbar"></div>
   <div id="hearts"></div>
 
+  <div class="rail">
+    <button class="railbtn" id="micBtn" aria-label="Microphone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/></svg>
+    </button>
+    <button class="railbtn" id="vidBtn" aria-label="Video">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="6" width="13" height="12" rx="3"/><path d="M15.5 11l6-3.5v9l-6-3.5z"/></svg>
+    </button>
+    <button class="railbtn" id="flipBtn" aria-label="Flip camera">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a7 7 0 0111.5-4M20 15a7 7 0 01-11.5 4"/><path d="M4 5v4h4M20 19v-4h-4"/></svg>
+    </button>
+    <button class="railbtn" id="fxBtn" aria-label="Effects">
+      <svg viewBox="0 0 24 24" fill="#fff"><path d="M9 2l1.6 4.4L15 8l-4.4 1.6L9 14l-1.6-4.4L3 8l4.4-1.6z"/><path d="M17.5 13l1 2.6 2.5.9-2.5.9-1 2.6-1-2.6-2.5-.9 2.5-.9z"/></svg>
+    </button>
+    <button class="railbtn" id="linkBtn" aria-label="Share link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M10 13.5a4 4 0 006 .5l2.5-2.5a4.2 4.2 0 00-6-6L11 7"/><path d="M14 10.5a4 4 0 00-6-.5L5.5 12.5a4.2 4.2 0 006 6L13 17"/></svg>
+    </button>
+  </div>
+
   <div class="bottombar">
-    <div class="fakeinput">Add a comment…</div>
-    <button class="circbtn" id="flipBtn" aria-label="Flip camera">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 012-2h3l1.5-2h3L14 4h4a2 2 0 012 2v10a2 2 0 01-2 2h-4"/><path d="M9 21l-3-3 3-3"/><path d="M6 18h6"/><circle cx="14" cy="11" r="3"/></svg>
+    <div class="composer">
+      <input id="replyInput" type="text" placeholder="Add a comment…" autocomplete="off" autocapitalize="sentences" enterkeyhint="send">
+      <button id="sendReply" aria-label="Send comment" hidden>Post</button>
+    </div>
+    <button class="circbtn" id="addVidBtn" aria-label="Add video">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"><rect x="2.5" y="6" width="13" height="12" rx="3"/><path d="M15.5 11l6-3.5v9l-6-3.5z"/><path d="M6 12h6M9 9v6" stroke-linecap="round"/></svg>
+    </button>
+    <button class="circbtn" id="peopleBtn" aria-label="Invite">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round"><circle cx="9" cy="8" r="3.4"/><path d="M2.5 19a6.5 6.5 0 0113 0"/><path d="M18 7v6M15 10h6"/></svg>
     </button>
     <button class="circbtn" id="heartBtn" aria-label="Send a like">
       <svg width="21" height="21" viewBox="0 0 24 24" fill="#fff"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0112 7a4.6 4.6 0 018 3.6C20 16.1 12 21 12 21z"/></svg>
@@ -1279,6 +605,17 @@ if ("serviceWorker" in navigator) {
   ];
 
   const PACKS = {
+    "TikTok LIVE": [
+      "sent a rose 🌹","hi from the algorithm","fyp brought me here","how many followers?",
+      "do the challenge!!","battle someone","{name} agree","gifted, notice me 🙏",
+      "say hi to me please","been here since 200 viewers","mods where","how long you been live",
+      "PK battle when","drop a follow everyone","{name} you're everywhere 😂","the sound is low",
+      "raise the mic","what's the goal for tonight","1k viewers let's go","he's actually funny",
+      "new follower here ✋","from Saudi 🇸🇦","from Egypt 🇪🇬","from Lebanon 🇱🇧",
+      "shoutout please 🙏","tap tap tap ❤️","share the live guys","who else is watching at 2am",
+      "the gifts are flying","stop scrolling and follow him","{name} same lol","rewatching this later",
+      "sub goal?","how old are you","this is my first live ever","that filter though"
+    ],
     "Everyday": [
       "first!!","yaaa Maher 🔥","we can hear you loud","sound is 🔥","hi from Riyadh 👋",
       "hi from Dubai","say hi to Beirut 🇱🇧","how many people watching wallah","turn the camera around!",
@@ -1349,9 +686,9 @@ if ("serviceWorker" in navigator) {
   };
   const DEFAULT_COMMENTS = PACKS["Everyday"];
   const AV_COLORS = ["#e0476b","#3f7fd8","#d98b1e","#3fa46a","#8a5cd1","#c4553f","#2e9aa8","#b03f8f"];
-  const GIFTS = ["sent a Rose 🌹","sent a Finger Heart 🫰","sent 5 Roses 🌹","sent a Perfume ✨","sent a Doughnut 🍩"];
 
-  const RATE_WORDS = ["Off","Trickle","Trickle","Calm","Calm","Steady","Busy","Busy","Buzzing","Buzzing","Chaos"];
+  const RATE_WORDS = ["Off","~22s","~11s","~7s","~5.5s","~4.5s","~3.7s","~3s","~2.7s","~2.5s","~2.2s"];
+  const HEART_WORDS = ["Off","Rare","Occasional","Occasional","Steady","Steady","Lively","Lively","Busy","Busy","Constant"];
 
   const S = {
     avatar:null, name:"maherghazal", verified:true, skin:"ig", camera:"user",
@@ -1382,7 +719,7 @@ if ("serviceWorker" in navigator) {
     els.viewers.value = S.viewers;
     els.trend.value = S.trend;
     els.chatrate.value = S.chatrate; els.chatrateV.textContent = RATE_WORDS[S.chatrate];
-    els.heartrate.value = S.heartrate; els.heartrateV.textContent = RATE_WORDS[S.heartrate];
+    els.heartrate.value = S.heartrate; els.heartrateV.textContent = HEART_WORDS[S.heartrate];
     els.joins.setAttribute("aria-pressed", S.joins);
     els.comments.value = S.comments;
     els.names.value = S.names;
@@ -1520,7 +857,7 @@ if ("serviceWorker" in navigator) {
   els.viewers.addEventListener("input", () => { S.viewers = Math.max(1, parseInt(els.viewers.value||"1",10)); save(); });
   els.trend.addEventListener("change", () => { S.trend = els.trend.value; save(); });
   els.chatrate.addEventListener("input", () => { S.chatrate = +els.chatrate.value; els.chatrateV.textContent = RATE_WORDS[S.chatrate]; save(); });
-  els.heartrate.addEventListener("input", () => { S.heartrate = +els.heartrate.value; els.heartrateV.textContent = RATE_WORDS[S.heartrate]; save(); });
+  els.heartrate.addEventListener("input", () => { S.heartrate = +els.heartrate.value; els.heartrateV.textContent = HEART_WORDS[S.heartrate]; save(); });
   els.comments.addEventListener("input", () => { S.comments = els.comments.value; save(); });
   els.names.addEventListener("input", () => { S.names = els.names.value; paintNameCount(); save(); });
 
@@ -1653,22 +990,64 @@ if ("serviceWorker" in navigator) {
     const tx = document.createElement("div"); tx.className = "tx"; tx.textContent = text;
     d.appendChild(tx); return d;
   }
-  function giftEl(who){
-    const d = document.createElement("div"); d.className = "msg";
-    const g = document.createElement("div"); g.className = "gift";
-    g.textContent = who + " " + pick(GIFTS);
-    d.appendChild(g); return d;
+  const TT_GIFTS = [
+    {n:"Rose", e:"🌹"}, {n:"Finger Heart", e:"🫰"}, {n:"Perfume", e:"✨"},
+    {n:"Doughnut", e:"🍩"}, {n:"Heart Me", e:"💖"}, {n:"GG", e:"🎮"},
+    {n:"Ice Cream", e:"🍦"}, {n:"Hand Hearts", e:"🤲"}, {n:"Sunglasses", e:"🕶️"},
+    {n:"Galaxy", e:"🌌"}, {n:"Lion", e:"🦁"}, {n:"TikTok Universe", e:"🪐"}
+  ];
+
+  function giftBanner(who){
+    const bar = $("#giftbar");
+    const g = pick(TT_GIFTS);
+    const combo = Math.random() < .45 ? (Math.random() < .5 ? 5 : (Math.random() < .5 ? 10 : 99)) : 1;
+
+    const card = document.createElement("div"); card.className = "giftcard";
+    const ic = document.createElement("span"); ic.className = "ic";
+    ic.style.background = AV_COLORS[who.charCodeAt(0) % AV_COLORS.length];
+    ic.textContent = who.charAt(0).toUpperCase();
+    const txt = document.createElement("div");
+    const nm = document.createElement("span"); nm.className = "who"; nm.textContent = who;
+    const wt = document.createElement("span"); wt.className = "what"; wt.textContent = "sent " + g.n;
+    txt.appendChild(nm); txt.appendChild(wt);
+    const emo = document.createElement("span"); emo.className = "emo"; emo.textContent = g.e;
+    card.appendChild(ic); card.appendChild(txt); card.appendChild(emo);
+    if (combo > 1){
+      const x = document.createElement("span"); x.className = "xn"; x.textContent = "x" + combo;
+      card.appendChild(x);
+    }
+
+    bar.appendChild(card);
+    while (bar.children.length > 3) bar.removeChild(bar.firstChild);
+    setTimeout(() => card.remove(), 4600);
+
+    for (let i = 0; i < Math.min(combo, 8); i++) setTimeout(heart, i*220);
   }
+
+  function paintStack(){
+    const stack = $("#ttStack");
+    stack.innerHTML = "";
+    const names = lines(S.names).length ? lines(S.names) : DEFAULT_NAMES;
+    for (let i = 0; i < 3; i++){
+      const who = pick(names);
+      const d = document.createElement("i");
+      d.style.background = AV_COLORS[(who.charCodeAt(0) + i) % AV_COLORS.length];
+      stack.appendChild(d);
+    }
+  }
+
+  const IG_HEARTS = ["#ff3b6b","#ff5a8a","#e0409c","#c13ec9","#8f3ee0","#ff4d4d","#5b6ef5"];
+  const TT_HEARTS = ["#fe2c55","#ff3b6b","#ff5470","#e8114a","#ff7a95"];
 
   function heart(x){
     const d = document.createElement("div"); d.className = "h";
-    d.style.setProperty("--dur", (3.2 + Math.random()*2.4) + "s");
+    d.style.setProperty("--dur", (6.5 + Math.random()*4) + "s");
     d.style.left = (14 + Math.random()*46) + "px";
     const size = 20 + Math.random()*14;
-    const hue = pick(["#ff3b6b","#ff7ba8","#ffd166","#7ee0ff","#b388ff","#ff5a3c"]);
+    const hue = pick(S.skin === "tt" ? TT_HEARTS : IG_HEARTS);
     d.innerHTML = '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="'+hue+'"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0112 7a4.6 4.6 0 018 3.6C20 16.1 12 21 12 21z"/></svg>';
     heartsBox.appendChild(d);
-    setTimeout(() => d.remove(), 6000);
+    setTimeout(() => d.remove(), 11000);
   }
 
   function tapBurst(x, y){
@@ -1677,29 +1056,29 @@ if ("serviceWorker" in navigator) {
     d.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="#ff3b6b"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0112 7a4.6 4.6 0 018 3.6C20 16.1 12 21 12 21z"/></svg>';
     $("#tapfx").appendChild(d);
     setTimeout(() => d.remove(), 800);
-    for (let i=0;i<3;i++) setTimeout(() => heart(), i*90);
+    for (let i=0;i<3;i++) setTimeout(() => heart(), i*230);
   }
 
   function scheduleChat(){
     if (S.chatrate === 0) return;
-    const base = 4200 / S.chatrate;
+    const base = 22000 / S.chatrate;
     const t = setTimeout(() => {
       const names = lines(S.names).length ? lines(S.names) : DEFAULT_NAMES;
       const roll = Math.random();
-      if (S.joins && roll < .12) addMsg(sysEl(pick(names) + " joined"));
-      else if (S.joins && S.skin === "tt" && roll < .18) addMsg(giftEl(pick(names)));
+      if (S.joins && S.skin === "tt" && roll < .22) giftBanner(pick(names));
+      else if (S.joins && roll < .34) addMsg(sysEl(pick(names) + (S.skin === "tt" ? " joined the LIVE" : " joined")));
       else addMsg(commentEl());
       scheduleChat();
-    }, base * (0.45 + Math.random()*1.3));
+    }, base * (0.7 + Math.random()*0.7));
     timers.push(t);
   }
 
   function scheduleHearts(){
     if (S.heartrate === 0) return;
-    const base = 2600 / S.heartrate;
+    const base = 7000 / S.heartrate;
     const t = setTimeout(() => {
       const n = 1 + Math.floor(Math.random()*3);
-      for (let i=0;i<n;i++) setTimeout(heart, i*140);
+      for (let i=0;i<n;i++) setTimeout(heart, i*380);
       scheduleHearts();
     }, base * (0.4 + Math.random()*1.2));
     timers.push(t);
@@ -1726,6 +1105,8 @@ if ("serviceWorker" in navigator) {
     S.viewers = viewers;
     vcount.textContent = fmt(viewers);
     chat.innerHTML = ""; heartsBox.innerHTML = "";
+    lastName = null;
+    $("#replyInput").value = ""; $("#sendReply").hidden = true;
 
     $("#liveName").textContent = S.name;
     $("#liveVerified").style.display = S.verified ? "block" : "none";
@@ -1741,6 +1122,14 @@ if ("serviceWorker" in navigator) {
     }
 
     live.classList.toggle("tt", S.skin === "tt");
+    $("#giftbar").innerHTML = "";
+    if (S.skin === "tt"){
+      paintStack();
+      $("#rankNum").textContent = "Top " + (1 + Math.floor(Math.random()*8));
+      $("#replyInput").placeholder = "Say something nice…";
+    } else {
+      $("#replyInput").placeholder = "Add a comment…";
+    }
     setup.style.display = "none"; profile.classList.remove("on"); live.classList.add("on");
 
     facing = S.camera;
@@ -1828,11 +1217,90 @@ if ("serviceWorker" in navigator) {
   ["pointerup","pointerleave","pointercancel"].forEach(ev =>
     esc.addEventListener(ev, () => clearTimeout(holdTimer)));
 
+  /* ---------- host replies ---------- */
+  const REACTIONS = [
+    "😂😂😂","he answered me!!","omg he replied","{name} you're famous now",
+    "thank you 🙏","see he does read the comments","ok that's cool",
+    "{name} lucky","waiting for my turn 😭","🔥🔥","fair enough","noted 📝",
+    "he's actually engaging","tell us more","yesss","💯"
+  ];
+
+  function hostEl(text){
+    const d = document.createElement("div"); d.className = "msg host";
+    const ic = document.createElement("span"); ic.className = "ic";
+    if (S.avatar){
+      const im = document.createElement("img"); im.src = S.avatar; im.alt = "";
+      im.style.cssText = "width:100%;height:100%;border-radius:50%;object-fit:cover";
+      ic.appendChild(im);
+    } else {
+      ic.style.background = AV_COLORS[0];
+      ic.textContent = (S.name||"?").charAt(0).toUpperCase();
+    }
+    const tx = document.createElement("div"); tx.className = "tx";
+    const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = "HOST";
+    const b = document.createElement("b"); b.textContent = S.name;
+    tx.appendChild(tag); tx.appendChild(b); tx.appendChild(document.createTextNode(text));
+    d.appendChild(ic); d.appendChild(tx);
+    return d;
+  }
+
+  function sendReply(){
+    const input = $("#replyInput");
+    const text = input.value.trim();
+    if (!text) return;
+    addMsg(hostEl(text));
+    input.value = "";
+    $("#sendReply").hidden = true;
+    lastName = S.name;
+
+    // viewers react to it
+    const names = lines(S.names).length ? lines(S.names) : DEFAULT_NAMES;
+    const bursts = 1 + Math.floor(Math.random()*3);
+    for (let i = 0; i < bursts; i++){
+      const t = setTimeout(() => {
+        const who = pick(names);
+        let text = pick(REACTIONS).replace(/\{name\}/g, "@" + (lastName || pick(names)));
+        const d = document.createElement("div"); d.className = "msg";
+        const ic = document.createElement("span"); ic.className = "ic";
+        ic.style.background = AV_COLORS[who.charCodeAt(0) % AV_COLORS.length];
+        ic.textContent = who.charAt(0).toUpperCase();
+        const tx = document.createElement("div"); tx.className = "tx";
+        const b = document.createElement("b"); b.textContent = who;
+        tx.appendChild(b); tx.appendChild(document.createTextNode(text));
+        d.appendChild(ic); d.appendChild(tx);
+        addMsg(d);
+        lastName = who;
+      }, 900 + i*1400 + Math.random()*900);
+      timers.push(t);
+    }
+    for (let i=0;i<4;i++) setTimeout(heart, i*260);
+  }
+
+  $("#replyInput").addEventListener("input", e => {
+    $("#sendReply").hidden = !e.target.value.trim();
+  });
+  $("#replyInput").addEventListener("keydown", e => {
+    if (e.key === "Enter"){ e.preventDefault(); sendReply(); $("#replyInput").blur(); }
+  });
+  $("#sendReply").addEventListener("click", sendReply);
+
+  /* ---------- rail buttons ---------- */
+  $("#micBtn").addEventListener("click", e => {
+    const b = e.currentTarget;
+    b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") !== "true");
+  });
+  $("#vidBtn").addEventListener("click", e => {
+    const b = e.currentTarget;
+    const off = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", off);
+    cam.style.visibility = off ? "hidden" : "visible";
+  });
+
   $("#retryCam").addEventListener("click", () => startCamera(facing));
   $("#skipCam").addEventListener("click", () => $("#camerr").classList.remove("on"));
   $("#golive").addEventListener("click", goLive);
   $("#endBtn").addEventListener("click", endLive);
-  $("#heartBtn").addEventListener("click", () => { for(let i=0;i<5;i++) setTimeout(heart, i*80); });
+  $("#heartBtn").addEventListener("click", () => { for(let i=0;i<5;i++) setTimeout(heart, i*200); });
   $("#flipBtn").addEventListener("click", () => {
     if (S.camera === "none") return;
     facing = facing === "user" ? "environment" : "user";
