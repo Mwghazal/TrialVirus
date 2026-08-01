@@ -72,6 +72,308 @@
   .slider{width:100%;-webkit-appearance:none;height:3px;border-radius:3px;background:#2b2b35;outline:none}
   .slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 8px rgba(0,0,0,.5)}
   .slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:0}
+  .val{font-variant-numeric:tabular-nums;font-size:13px;color:#fff;min-width:76px;text-align:right}
+
+  .switch{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .switch span{font-size:14.5px}
+  .toggle{width:48px;height:29px;border-radius:15px;background:#2b2b35;position:relative;transition:background .2s;flex:none}
+  .toggle::after{content:"";position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;background:#fff;transition:transform .2s}
+  .toggle[aria-pressed=true]{background:#4f5bd5}
+  .toggle[aria-pressed=true]::after{transform:translateX(19px)}
+
+  .hint{font-size:12px;color:#6b6b76;margin-top:8px;line-height:1.5}
+
+  #golive{position:fixed;left:18px;right:18px;bottom:26px;padding:16px;border-radius:16px;font-size:16px;font-weight:700;
+    background:linear-gradient(90deg,var(--ig2),var(--ig3),var(--ig4));box-shadow:0 10px 30px rgba(214,41,118,.35)}
+  #golive:active{transform:translateY(1px)}
+
+  /* ---------- LIVE ---------- */
+  #live{position:fixed;inset:0;display:none;overflow:hidden;background:#000}
+  #live.on{display:block}
+  #cam{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  #cam.mirror{transform:scaleX(-1)}
+  #fallback{position:absolute;inset:0;background:
+    radial-gradient(700px 500px at 30% 20%, #3a2b52, transparent 60%),
+    radial-gradient(600px 500px at 80% 80%, #1e3a4c, transparent 60%),#0a0a0e;}
+  .scrim-top{position:absolute;top:0;left:0;right:0;height:200px;background:linear-gradient(180deg,rgba(0,0,0,.65),transparent);pointer-events:none}
+  .scrim-bot{position:absolute;bottom:0;left:0;right:0;height:320px;background:linear-gradient(0deg,rgba(0,0,0,.72),transparent);pointer-events:none}
+
+  .topbar{position:absolute;top:0;left:0;right:0;padding:calc(14px + env(safe-area-inset-top)) 12px 0;display:flex;align-items:center;gap:8px}
+  .who{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.35);border-radius:22px;padding:5px 12px 5px 5px;backdrop-filter:blur(6px)}
+  .who img,.who .ph{width:32px;height:32px;border-radius:50%;object-fit:cover;background:#333;display:grid;place-items:center;font-size:13px;font-weight:700}
+  .who b{font-size:14px;font-weight:600;max-width:38vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .verified{width:13px;height:13px;flex:none}
+  .pill{font-size:12.5px;font-weight:700;letter-spacing:.04em;padding:6px 9px;border-radius:7px}
+  .pill.live{background:linear-gradient(90deg,#f9296b,#ff5a3c);text-transform:uppercase}
+  .pill.eyes{background:rgba(0,0,0,.42);display:flex;align-items:center;gap:5px;font-weight:600;font-variant-numeric:tabular-nums;backdrop-filter:blur(6px)}
+  .spacer{flex:1}
+  .xbtn{width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.42);display:grid;place-items:center;backdrop-filter:blur(6px)}
+
+
+  #chat{position:absolute;left:12px;bottom:calc(78px + env(safe-area-inset-bottom));width:74%;max-height:44vh;
+    display:flex;flex-direction:column;justify-content:flex-end;gap:9px;overflow:hidden;
+    -webkit-mask-image:linear-gradient(180deg,transparent,#000 22%);mask-image:linear-gradient(180deg,transparent,#000 22%)}
+  .msg{display:flex;gap:8px;align-items:flex-start;animation:rise .45s cubic-bezier(.2,.9,.3,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .msg .ic{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff}
+  .msg .tx{font-size:14px;line-height:1.34;text-shadow:0 1px 3px rgba(0,0,0,.55)}
+  .msg .tx b{font-weight:600;color:rgba(255,255,255,.72);margin-right:6px;font-size:13.5px}
+  .msg.sys .tx{color:rgba(255,255,255,.8);font-size:13px}
+  .gift{background:linear-gradient(90deg,rgba(255,0,80,.85),rgba(255,0,80,.25));border-radius:8px;padding:6px 10px;font-size:13px;
+        animation:rise .45s cubic-bezier(.2,.9,.3,1)}
+
+  .rail{position:absolute;right:10px;top:calc(84px + env(safe-area-inset-top));display:flex;flex-direction:column;gap:22px;align-items:center}
+  .railbtn{width:30px;height:30px;display:grid;place-items:center;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}
+  .railbtn svg{width:26px;height:26px}
+  .railbtn[aria-pressed=true] svg{opacity:.35}
+
+  .bottombar{position:absolute;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px}
+  .composer{flex:1;min-width:0;height:44px;border-radius:22px;border:1px solid rgba(255,255,255,.4);display:flex;align-items:center;
+    padding:0 6px 0 16px;background:rgba(0,0,0,.22);backdrop-filter:blur(4px)}
+  .composer input{flex:1;min-width:0;background:none;border:0;outline:none;font-size:14.5px;color:#fff;padding:0}
+  .composer input::placeholder{color:rgba(255,255,255,.75)}
+  .composer button{padding:8px 13px;border-radius:16px;font-size:13.5px;font-weight:700;color:#4d9fff}
+  .circbtn{width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.32);display:grid;place-items:center;backdrop-filter:blur(4px);flex:none}
+
+  .msg.host .tx b{color:#fff}
+  .msg.host .ic{box-shadow:0 0 0 2px #fff}
+  .msg.host .tag{font-size:10.5px;font-weight:700;letter-spacing:.04em;background:rgba(255,255,255,.9);color:#000;
+    border-radius:4px;padding:1px 5px;margin-right:6px;vertical-align:1px}
+
+  #hearts{position:absolute;right:6px;bottom:70px;width:90px;height:70vh;pointer-events:none;overflow:hidden}
+  .h{position:absolute;bottom:0;left:34px;animation:up var(--dur,4.2s) linear forwards}
+  .h svg{display:block;animation:sway 1.4s ease-in-out infinite alternate}
+  @keyframes up{to{transform:translateY(-70vh) scale(.55);opacity:0}}
+  @keyframes sway{from{transform:translateX(-16px) rotate(-8deg)}to{transform:translateX(16px) rotate(8deg)}}
+
+  #camerr{position:absolute;left:20px;right:20px;top:50%;transform:translateY(-50%);
+    background:rgba(18,18,22,.92);border:1px solid #2c2c36;border-radius:16px;padding:20px;display:none;backdrop-filter:blur(10px)}
+  #camerr.on{display:block}
+  #camerr h3{margin:0 0 8px;font-size:16px}
+  #camerr p{margin:0 0 16px;font-size:13.5px;line-height:1.55;color:#b9b9c4}
+  #camerr .row{gap:8px}
+  #camerr button{flex:1;padding:11px 0;border-radius:10px;font-size:14px;font-weight:600;text-align:center}
+  #retryCam{background:#4f5bd5}
+  #skipCam{background:#23232c}
+
+  #tapfx{position:absolute;inset:0}
+  .burst{position:absolute;pointer-events:none;animation:pop .7s ease-out forwards}
+  @keyframes pop{0%{transform:scale(.3);opacity:1}100%{transform:scale(1.5) translateY(-40px);opacity:0}}
+
+  /* ---------- ENDED ---------- */
+  /* ---------- pack chips ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .chip{border:1px solid var(--line);background:#0e0e12;border-radius:999px;padding:8px 13px;font-size:13px;color:#c9c9d3}
+  .chip:active{background:#1b1b22}
+  .chip[aria-pressed=true]{background:#23232c;color:#fff;border-color:#3a3a46}
+  .packbtns{display:flex;gap:8px;margin-bottom:12px}
+  .packbtns .ghost{flex:1;text-align:center}
+  .thumbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .thumbs img{width:52px;height:66px;object-fit:cover;border-radius:6px}
+  .thumbs .empty{width:52px;height:66px;border-radius:6px;border:1px dashed #33333f}
+
+  /* ---------- INSTAGRAM PROFILE ---------- */
+  #profile{position:fixed;inset:0;display:none;background:#fff;color:#000;overflow-y:auto;overscroll-behavior:contain}
+  #profile.on{display:block}
+  #profile img{display:block}
+  .ig{padding-bottom:78px;font-size:15px}
+  .ig-shot{width:100%;height:auto}
+  .ig-top{display:flex;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 14px 8px}
+  .ig-top .mid{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-width:0}
+  .ig-top .mid b{font-size:21px;font-weight:700;letter-spacing:-.3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ig-ico{width:26px;height:26px;flex:none}
+  .ig-stats{display:flex;align-items:center;gap:8px;padding:10px 16px 4px}
+  .ig-av{width:86px;height:86px;border-radius:50%;object-fit:cover;background:#efefef;flex:none;
+         display:grid;place-items:center;font-size:30px;font-weight:700;color:#b9b9c0;border:1px solid #eee}
+  .ig-nums{flex:1;display:flex;justify-content:space-around;text-align:center}
+  .ig-nums b{display:block;font-size:19px;font-weight:700;letter-spacing:-.4px}
+  .ig-nums span{font-size:13.5px;color:#222}
+  .ig-bio{padding:12px 16px 0;line-height:1.42;font-size:14.5px}
+  .ig-bio .nm{font-weight:700;font-size:15px}
+  .ig-bio a{color:#00376b;text-decoration:none;word-break:break-all}
+  .ig-dash{margin:14px 16px 0;background:#f2f3f5;border-radius:12px;padding:13px 15px}
+  .ig-dash b{display:block;font-size:15px;font-weight:600}
+  .ig-dash span{font-size:13px;color:#666}
+  .ig-actions{display:flex;gap:8px;padding:12px 16px 0}
+  .ig-actions div{flex:1;background:#efefef;border-radius:9px;padding:9px 0;text-align:center;font-size:14px;font-weight:600}
+  .ig-high{display:flex;gap:16px;padding:18px 16px 4px;overflow-x:auto;scrollbar-width:none}
+  .ig-high::-webkit-scrollbar{display:none}
+  .ig-high figure{margin:0;width:66px;flex:none;text-align:center}
+  .ig-high .ring{width:66px;height:66px;border-radius:50%;border:1px solid #dbdbdb;overflow:hidden;display:grid;place-items:center;background:#fafafa}
+  .ig-high .ring img{width:100%;height:100%;object-fit:cover}
+  .ig-high figcaption{font-size:12px;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ig-tabs{display:flex;margin-top:16px;border-top:1px solid #dbdbdb}
+  .ig-tabs div{flex:1;padding:11px 0;display:grid;place-items:center;border-bottom:1.5px solid transparent}
+  .ig-tabs div.sel{border-bottom-color:#000}
+  .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px}
+  .ig-grid .cell{aspect-ratio:3/4;background:#e9e9ee;position:relative;overflow:hidden}
+  .ig-grid .cell img{width:100%;height:100%;object-fit:cover}
+  .ig-nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #efefef;
+          display:flex;justify-content:space-around;align-items:center;padding:11px 8px calc(11px + env(safe-area-inset-bottom))}
+  .ig-nav img.me{width:26px;height:26px;border-radius:50%;object-fit:cover}
+  #escape{position:fixed;top:0;right:0;width:64px;height:64px;z-index:9}
+
+  /* ---------- tiktok skin ---------- */
+  #live.tt .pill.live{background:var(--tt2);border-radius:3px;font-size:11.5px;letter-spacing:.06em}
+  #live.tt .pill.eyes{border-radius:20px;background:rgba(0,0,0,.32);padding:5px 11px}
+  #live.tt .who{border-radius:20px;background:rgba(0,0,0,.32);padding:4px 4px 4px 4px}
+  #live.tt .who b{font-size:13.5px;font-weight:700}
+  #live.tt .verified{display:none}
+  #live.tt .topbar{gap:6px;flex-wrap:wrap}
+
+  /* comments become dark pills */
+  #live.tt #chat{width:80%;gap:7px}
+  #live.tt .msg{align-items:center;background:rgba(0,0,0,.3);border-radius:16px;padding:5px 11px 5px 5px;
+    width:fit-content;max-width:100%;backdrop-filter:blur(2px)}
+  #live.tt .msg .ic{width:24px;height:24px;font-size:10px}
+  #live.tt .msg .tx{font-size:13.5px;text-shadow:none}
+  #live.tt .msg .tx b{display:block;color:rgba(255,255,255,.6);font-size:12px;font-weight:500;margin:0 0 1px}
+  #live.tt .msg.sys{background:rgba(120,90,220,.35)}
+  #live.tt .msg.host{background:rgba(255,0,80,.32)}
+  #live.tt .gift{background:none;padding:0;font-size:13px}
+
+  /* viewer avatar stack + rank chip */
+  .ttstack{display:none;align-items:center;gap:0}
+  #live.tt .ttstack{display:flex}
+  .ttstack i{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(0,0,0,.35);margin-left:-8px;display:block}
+  .ttstack i:first-child{margin-left:0}
+  .ttrank{display:none;align-items:center;gap:4px;background:rgba(0,0,0,.32);border-radius:20px;padding:5px 10px;
+    font-size:12px;font-weight:600;backdrop-filter:blur(6px)}
+  #live.tt .ttrank{display:flex}
+
+  /* gift banner */
+  #giftbar{position:absolute;left:12px;bottom:calc(150px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;pointer-events:none}
+  .giftcard{display:flex;align-items:center;gap:9px;background:linear-gradient(90deg,rgba(255,0,80,.92),rgba(255,90,60,.5));
+    border-radius:10px;padding:7px 14px 7px 7px;animation:slideIn .45s cubic-bezier(.2,.9,.3,1)}
+  .giftcard .ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+  .giftcard .who{background:none;padding:0;font-size:12.5px;font-weight:700;display:block}
+  .giftcard .what{font-size:11.5px;opacity:.9}
+  .giftcard .emo{font-size:24px;margin-left:4px}
+  .giftcard .xn{font-size:17px;font-weight:800;font-style:italic}
+  @keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
+
+  /* tiktok bottom bar */
+  #live.tt .composer{border-radius:8px;border-color:rgba(255,255,255,.28)}
+  #live.tt .circbtn{border-radius:9px;background:rgba(0,0,0,.28)}
+
+  @media (prefers-reduced-motion: reduce){
+    .h,.h svg,.msg,.gift,.burst{animation-duration:.01ms!important;animation-iteration-count:1!important}
+    .h{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SETUP ============ -->
+<div id="setup">
+  <div class="brand"><span class="dot"></span><h1>Go Live</h1></div>
+  <p class="sub">Set the stage, then start. Everything on screen is simulated — no stream leaves this phone.</p>
+  <button class="ghost" id="installBtn" hidden style="margin-bottom:18px">📲 Install as an app</button>
+
+  <div class="card">
+    <h2>Profile</h2>
+    <div class="avatar-pick">
+      <div class="av" id="avPreview">M</div>
+      <div>
+        <button class="ghost" id="pickAvatar">Choose photo</button>
+        <input type="file" id="avatarFile" accept="image/*" hidden>
+        <div class="hint">Screenshot your profile picture and pick it here.</div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <div class="field">
+        <label class="f" for="uname">Username</label>
+        <input type="text" id="uname" value="maherghazal" autocapitalize="none" autocorrect="off">
+      </div>
+    </div>
+    <div class="row">
+      <div class="switch" style="flex:1">
+        <span>Verified badge</span>
+        <button class="toggle" id="verified" aria-pressed="true" aria-label="Verified badge"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Look</h2>
+    <div class="seg" id="skin">
+      <button data-skin="ig" aria-pressed="true">Instagram</button>
+      <button data-skin="tt" aria-pressed="false">TikTok</button>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <div class="field">
+        <label class="f" for="camera">Camera</label>
+        <select id="camera">
+          <option value="user">Front camera</option>
+          <option value="environment">Back camera</option>
+          <option value="none">No camera (dark backdrop)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Audience</h2>
+    <div class="row">
+      <div class="field">
+        <label class="f" for="viewers">Starting viewers</label>
+        <input type="number" id="viewers" value="4200" min="1" max="9999999" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label class="f" for="trend">Trend</label>
+        <select id="trend">
+          <option value="climb">Climbing</option>
+          <option value="wobble">Holding steady</option>
+          <option value="fixed">Locked</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label class="f" for="chatrate">Comment speed</label>
+        <div class="row"><input type="range" class="slider" id="chatrate" min="1" max="10" value="6"><span class="val" id="chatrateV">Busy</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label class="f"  #setup{position:fixed;inset:0;overflow-y:auto;padding:22px 18px 120px;background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(150,47,191,.28), transparent 60%),
+    radial-gradient(900px 400px at 100% 0%, rgba(250,126,30,.18), transparent 55%),
+    var(--ink);}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 rgba(255,45,85,.7);animation:pulse 2s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 10px rgba(255,45,85,0)}100%{box-shadow:0 0 0 0 rgba(255,45,85,0)}}
+  h1{font-size:26px;letter-spacing:-.5px;margin:0;font-weight:700}
+  .sub{color:var(--muted);font-size:13.5px;margin:6px 0 22px;line-height:1.5}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+  .card h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:600}
+  .row{display:flex;gap:12px;align-items:center}
+  .row + .row{margin-top:14px}
+  label.f{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+  .field{flex:1;min-width:0}
+  input[type=text],input[type=number],textarea,select{
+    width:100%;background:#0e0e12;border:1px solid var(--line);border-radius:10px;
+    padding:11px 12px;font-size:15px;outline:none;
+  }
+  input:focus,textarea:focus,select:focus{border-color:#4f5bd5;box-shadow:0 0 0 3px rgba(79,91,213,.25)}
+  textarea{resize:vertical;min-height:120px;line-height:1.6;font-size:14px}
+  select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#8b8b96 50%),linear-gradient(135deg,#8b8b96 50%,transparent 50%);
+    background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+
+  .avatar-pick{display:flex;align-items:center;gap:14px}
+  .av{width:60px;height:60px;border-radius:50%;object-fit:cover;background:#222;border:2px solid #2f2f3a;flex:none;
+      display:grid;place-items:center;font-weight:700;font-size:20px;color:#6f6f7d}
+  .ghost{border:1px solid var(--line);border-radius:10px;padding:9px 14px;font-size:13.5px;background:#0e0e12}
+  .ghost:active{background:#17171d}
+
+  .seg{display:flex;background:#0e0e12;border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+  .seg button{flex:1;padding:9px 0;border-radius:9px;font-size:13.5px;color:var(--muted);font-weight:600}
+  .seg button[aria-pressed=true]{background:#23232c;color:#fff}
+
+  .slider{width:100%;-webkit-appearance:none;height:3px;border-radius:3px;background:#2b2b35;outline:none}
+  .slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+  .slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:0}
   .val{font-variant-numeric:tabular-nums;font-size:13px;color:#fff;min-width:52px;text-align:right}
 
   .switch{display:flex;align-items:center;justify-content:space-between;gap:12px}
